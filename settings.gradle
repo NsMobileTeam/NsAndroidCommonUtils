@@ -1,0 +1,3 @@
+include ':nsutils'
+include ':app'
+rootProject.name = "UtilBundle"

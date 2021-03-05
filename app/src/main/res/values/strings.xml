@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">UtilBundle</string>
+    <string translatable="false" name="fileProviderName">com.nextsense.utilbundle.fileprovider</string>
+</resources>
