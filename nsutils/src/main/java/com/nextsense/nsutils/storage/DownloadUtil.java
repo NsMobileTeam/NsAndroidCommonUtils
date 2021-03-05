@@ -23,7 +23,7 @@ public class DownloadUtil {
 
 
     /**
-     * Download a file from a HTTP url
+     * Download a file from a HTTP url into the internal storage
      * @param url HTTP link
      */
     public static void downloadUrl(String url) {
@@ -32,7 +32,7 @@ public class DownloadUtil {
 
 
     /**
-     * Download a file from a HTTP url
+     * Download a file from a HTTP url into the internal storage
      * @param url HTTP link
      * @param callback Download completion listener
      */

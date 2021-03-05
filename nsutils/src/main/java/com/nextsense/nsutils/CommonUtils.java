@@ -34,7 +34,7 @@ public class CommonUtils {
     }
 
     /**
-     * Hides the software keyboard
+     * Hide the software keyboard
      * @param view Editable View Object on the current screen
      */
     public static void hideKeyboard(View view) {
@@ -51,7 +51,7 @@ public class CommonUtils {
     }
 
     /**
-     * Converts dp to pixels
+     * Convert dp to pixels
      * @param dp Dimension value in dp
      * @return Converted value in pixels
      */
@@ -87,7 +87,7 @@ public class CommonUtils {
     }
 
     /**
-     * Generates a bitmap form a Drawable object
+     * Generate a bitmap form a Drawable object
      * @param drawable Drawable object
      * @return Bitmap form a Drawable object
      */

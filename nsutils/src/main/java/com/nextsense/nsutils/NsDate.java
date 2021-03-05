@@ -12,7 +12,7 @@ public class NsDate extends Date {
     public static final String DATE_STRING_KEYWORD = "&DATE&";
 
     /**
-     * New date object from a textString that conforms to the defined SimpleDateFormat
+     * New date object from a textString that conforms to the defined SimpleDateFormat formatString
      * @param rawDate A textString conforming to the defined SimpleDateFormat
      * @param formatPattern SimpleDateFormat syntax example "yyyy-MM-dd'T'HH:mm:ss.SSS (XXX)"
      */
@@ -22,7 +22,7 @@ public class NsDate extends Date {
     }
 
     /**
-     * New date object from a textString that conforms to the defined SimpleDateFormat
+     * New date object from a textString that conforms to the defined localised SimpleDateFormat
      * @param rawDate A textString conforming to the defined SimpleDateFormat
      * @param formatPattern SimpleDateFormat syntax example "yyyy-MM-dd'T'HH:mm:ss.SSS (XXX)"
      * @param locale Desired locale
@@ -42,7 +42,7 @@ public class NsDate extends Date {
     }
 
     /**
-     * Date from a timeString in milliseconds
+     * Date from a timeString containing a millisecond substring
      * @param rawMillis TimeString in milliseconds
      */
     public NsDate(String rawMillis) {
@@ -50,7 +50,7 @@ public class NsDate extends Date {
     }
 
     /**
-     * Date from a timeString in unknown scale multiplied by its divisor into milliseconds
+     * Date from a timeString containing a timeMark in unknown scale multiplied by its divisor into milliseconds
      * @param rawTime TimeString in unknown scale
      * @param timeDivisor Time multiplier into milliseconds
      */
@@ -59,7 +59,7 @@ public class NsDate extends Date {
     }
 
     /**
-     * Date from time in milliseconds
+     * Date from milliseconds
      * @param millis Time in milliseconds
      */
     public NsDate(long millis) {
@@ -67,7 +67,7 @@ public class NsDate extends Date {
     }
 
     /**
-     * Converts a date from a textString that conforms to the defined SimpleDateFormat
+     * Sets the date from a textString that conforms to the defined SimpleDateFormat
      * @param rawDate A textString conforming to the defined SimpleDateFormat
      * @param format SimpleDateFormat syntax example "yyyy-MM-dd'T'HH:mm:ss.SSS (XXX)"
      */
@@ -95,20 +95,20 @@ public class NsDate extends Date {
 
     /**
      * Creates SimpleDateFormat from a String and returns a formatted date string
-     * @param format SimpleDateFormat syntax example "yyyy-MM-dd'T'HH:mm:ss.SSS (XXX)"
+     * @param dateFormat SimpleDateFormat syntax example "yyyy-MM-dd'T'HH:mm:ss.SSS (XXX)"
      * @return Time formatted according to SimpleDateFormat string
      */
     @SuppressLint("SimpleDateFormat")
-    public String toString(String format) {
+    public String toString(String dateFormat) {
         try {
-            return toString(new SimpleDateFormat(format));
+            return toString(new SimpleDateFormat(dateFormat));
         } catch (Exception ignore) {
             return "";
         }
     }
 
     /**
-     * Creates SimpleDateFormat from a String and returns a formatted date string
+     * Creates localised SimpleDateFormat from a String and returns a formatted date string
      * @param format SimpleDateFormat syntax example "yyyy-MM-dd'T'HH:mm:ss.SSS (XXX)"
      * @param locale Desired locale
      * @return Time formatted according to SimpleDateFormat string
@@ -131,7 +131,7 @@ public class NsDate extends Date {
     }
 
     /**
-     * String value of time in milliseconds
+     * String value of the time in milliseconds
      * @return String value of time in milliseconds
      */
     public String toStringMs() {
@@ -139,7 +139,7 @@ public class NsDate extends Date {
     }
 
     /**
-     * String value of time in milliseconds
+     * String value of time in milliseconds devided by the divisor
      * @param divisor If greater than 0 will be used to divide the milliseconds in final result
      * @return String value of time in milliseconds divided by divisor
      */
@@ -148,7 +148,7 @@ public class NsDate extends Date {
     }
 
     /**
-     * Use keyword &DATE& to place value of time
+     * Get a formatted time string using the keyword &DATE& to place a value of time
      * @param stringFormat Default string format containing the &DATE& keyword, example: "%s&DATE&%s%d"
      * @param objects Using previous example objects should be ("/Date(\'", "\')", 12) and will result in /Date('1614947297709')12
      * @return Formatted string according to String.format(String format, Object[] values)
@@ -158,7 +158,7 @@ public class NsDate extends Date {
     }
 
     /**
-     * Use keyword &DATE& to place value of time
+     * Get a formatted time string (divided by the divisor) using the keyword &DATE& to place a value of time
      * @param divisor If greater than 0 will be used to divide the milliseconds in final result
      * @param stringFormat Default string format containing the &DATE& keyword, example: "%s&DATE&%s%d"
      * @param objects Using previous example objects should be ("/Date(\'", "\')", 12) and will result in /Date('1614947297709')12

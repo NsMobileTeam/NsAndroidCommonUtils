@@ -25,7 +25,7 @@ public class PermissionUtil {
     /**
      * Initialise the permission Map example: MapEntry(key: "android.permission.ACCESS_FINE_LOCATION", value: 2301)
      */
-    public static void initIfEmpty() {
+    private static void initIfEmpty() {
         if (permissionMap.isEmpty()) {
             Field[] fields = Manifest.permission.class.getDeclaredFields();
             int requestCode = BASE_REQUEST_CODE;
@@ -42,7 +42,7 @@ public class PermissionUtil {
     }
 
     /**
-     * Determine weather all the listed permissions are granted
+     * Determine whether all the listed permissions are granted
      * @param permissions Array of any of the permissions defined in the Manifest.permission class
      * @return True if all the listed permissions are granted, otherwise returns false
      */
@@ -89,7 +89,7 @@ public class PermissionUtil {
     }
 
     /**
-     * Calculates a unique request code for the listed permissions
+     * Gets a unique request code for the listed permissions
      * @param permissions Array of any of the permissions defined in the Manifest.permission class
      * @return unique request code for the listed permissions
      */

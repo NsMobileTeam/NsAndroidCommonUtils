@@ -6,14 +6,14 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.nextsense.nsutils.UtilBase;
 
-class StorageBundle {
+public class PreferencesHelper {
     private final SharedPreferences preferences;
 
     /**
      * Get or create a new sharedPreference bundle by Name
      * @param name Name of the sharedPreference
      */
-    public StorageBundle(String name) {
+    public PreferencesHelper(String name) {
         preferences = UtilBase.getContext().getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 

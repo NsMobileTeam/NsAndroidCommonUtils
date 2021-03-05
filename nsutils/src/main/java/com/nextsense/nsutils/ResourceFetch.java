@@ -61,7 +61,7 @@ public class ResourceFetch {
     }
 
     /**
-     * Get color from its resource id
+     * Get a color integer from its resource id
      * @param colorId Color resource id
      * @return A color integer
      */
