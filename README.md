@@ -22,7 +22,7 @@ In build.gradle **(Module)**:
 dependencies {
   ...
   implementation 'com.google.code.gson:gson:2.8.6'
-  implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.2'
+  implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.1'
 }
 ```
 
@@ -212,6 +212,26 @@ public static void downloadUrl(String url, @Nullable DownloadUtil.DownloadCallba
 public static void downloadUrl(String url, boolean publicFile, @Nullable DownloadUtil.DownloadCallback callback)
 //Download a file from a HTTP if publicFile==true the file will be saved under the Downloads directory
 public static void downloadUrl(String url, @Nullable String subDirectory, boolean notification, boolean publicFile, @Nullable DownloadUtil.DownloadCallback callback)
+```
+
+Class: **LocaleUtil**:
+```java
+//Initialises and sets application locale
+public static void initAppLocale(@Nullable Locale defaultLocale)
+//Apply locale to a context
+public static void applyCurrentLocale(Context context)
+//Apply locale to an Activity
+public static void setLocale(Activity activity, String languageCode)
+//Apply locale to a context
+public static void setLocale(Context context, String languageCode)
+//Apply locale to a context
+public static void setLocale(Context context, String languageCode, @Nullable String region)
+//Apply locale to a context
+public static void setLocale(Context context, Locale locale)
+//Gets the prefered locale from preferences if saved, the argument provided or device locale
+public static Locale getPreferredLocale(@Nullable Locale defaultLocale)
+//Gets the currently set locale from app configuration
+public static Locale getCurrentAppLocale()
 ```
 
 Class: **NsActivity**:
