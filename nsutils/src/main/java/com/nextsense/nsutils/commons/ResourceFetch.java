@@ -1,4 +1,4 @@
-package com.nextsense.nsutils;
+package com.nextsense.nsutils.commons;
 
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -11,6 +11,8 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
+
+import com.nextsense.nsutils.UtilBase;
 
 import java.util.Locale;
 
@@ -68,6 +70,22 @@ public class ResourceFetch {
     @ColorInt
     public static int getColor(@ColorRes int colorId) {
         return ContextCompat.getColor(UtilBase.getContext(), colorId);
+    }
+
+    /**
+     * Get the app resources
+     * @return The app resources
+     */
+    public static Resources getResources() {
+        return UtilBase.getContext().getResources();
+    }
+
+    /**
+     * Get the app configuration
+     * @return The app configuration
+     */
+    public static Configuration getConfiguration() {
+        return getResources().getConfiguration();
     }
 
     /**

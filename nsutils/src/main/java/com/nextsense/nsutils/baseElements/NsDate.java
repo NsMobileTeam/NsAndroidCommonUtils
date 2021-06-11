@@ -1,6 +1,8 @@
-package com.nextsense.nsutils;
+package com.nextsense.nsutils.baseElements;
 
 import android.annotation.SuppressLint;
+
+import com.nextsense.nsutils.commons.CommonUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,9 +18,8 @@ public class NsDate extends Date {
      * @param rawDate A textString conforming to the defined SimpleDateFormat
      * @param formatPattern SimpleDateFormat syntax example "yyyy-MM-dd'T'HH:mm:ss.SSS (XXX)"
      */
-    @SuppressLint("SimpleDateFormat")
     public NsDate(String rawDate, String formatPattern) {
-        this(rawDate, new SimpleDateFormat(formatPattern));
+        setTime(rawDate, formatPattern);
     }
 
     /**
@@ -28,8 +29,7 @@ public class NsDate extends Date {
      * @param locale Desired locale
      */
     public NsDate(String rawDate, String formatPattern, Locale locale) {
-        this(rawDate, new SimpleDateFormat(formatPattern, locale));
-
+        setTime(rawDate, formatPattern, locale);
     }
 
     /**
@@ -42,11 +42,11 @@ public class NsDate extends Date {
     }
 
     /**
-     * Date from a timeString containing a millisecond substring
+     * New date object from a timeString containing a millisecond substring
      * @param rawMillis TimeString in milliseconds
      */
     public NsDate(String rawMillis) {
-        setTime(longFromString(rawMillis));
+        setTime(rawMillis);
     }
 
     /**
@@ -67,6 +67,41 @@ public class NsDate extends Date {
     }
 
     /**
+     * Current time and date
+     */
+    public NsDate() {
+        setTime(System.currentTimeMillis());
+    }
+
+    /**
+     * Set date object from a textString that conforms to the defined SimpleDateFormat formatString
+     * @param rawDate A textString conforming to the defined SimpleDateFormat
+     * @param formatPattern SimpleDateFormat syntax example "yyyy-MM-dd'T'HH:mm:ss.SSS (XXX)"
+     */
+    @SuppressLint("SimpleDateFormat")
+    public void setTime(String rawDate, String formatPattern) {
+        setTime(rawDate, new SimpleDateFormat(formatPattern));
+    }
+
+    /**
+     * Set date object from a textString that conforms to the defined localised SimpleDateFormat
+     * @param rawDate A textString conforming to the defined SimpleDateFormat
+     * @param formatPattern SimpleDateFormat syntax example "yyyy-MM-dd'T'HH:mm:ss.SSS (XXX)"
+     * @param locale Desired locale
+     */
+    public void setTime(String rawDate, String formatPattern, Locale locale) {
+        setTime(rawDate, new SimpleDateFormat(formatPattern, locale));
+    }
+
+    /**
+     * Set date object from a timeString containing a millisecond substring
+     * @param rawMillis TimeString in milliseconds
+     */
+    public void setTime(String rawMillis) {
+        setTime(longFromString(rawMillis));
+    }
+
+    /**
      * Sets the date from a textString that conforms to the defined SimpleDateFormat
      * @param rawDate A textString conforming to the defined SimpleDateFormat
      * @param format SimpleDateFormat syntax example "yyyy-MM-dd'T'HH:mm:ss.SSS (XXX)"
@@ -77,6 +112,15 @@ public class NsDate extends Date {
         } catch (Exception e) {
             setTime(0L);
         }
+    }
+
+    /**
+     * Set date object from a timeString containing a timeMark in unknown scale multiplied by its divisor into milliseconds
+     * @param rawTime TimeString in unknown scale
+     * @param timeMultiplier Time multiplier into milliseconds
+     */
+    public void setTime(String rawTime, long timeMultiplier) {
+        setTime(longFromString(rawTime) * timeMultiplier);
     }
 
     /**

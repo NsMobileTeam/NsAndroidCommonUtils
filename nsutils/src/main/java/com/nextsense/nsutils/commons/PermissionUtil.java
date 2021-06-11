@@ -1,4 +1,4 @@
-package com.nextsense.nsutils;
+package com.nextsense.nsutils.commons;
 
 import android.Manifest;
 import android.app.Activity;
@@ -10,6 +10,8 @@ import android.provider.Settings;
 
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+
+import com.nextsense.nsutils.UtilBase;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

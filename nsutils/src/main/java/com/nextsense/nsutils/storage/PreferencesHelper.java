@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.nextsense.nsutils.UtilBase;
+import com.nextsense.nsutils.commons.CommonUtils;
 
 public class PreferencesHelper {
     private final SharedPreferences preferences;
@@ -15,6 +16,14 @@ public class PreferencesHelper {
      */
     public PreferencesHelper(String name) {
         preferences = UtilBase.getContext().getSharedPreferences(name, Context.MODE_PRIVATE);
+    }
+
+    /**
+     * Get or create a new sharedPreference bundle by Name
+     * @param name Name of the sharedPreference
+     */
+    public static PreferencesHelper get(String name) {
+        return new PreferencesHelper(name);
     }
 
     /**
@@ -71,7 +80,7 @@ public class PreferencesHelper {
      * @param object Value of the Object
      */
     public void saveObject(String key, Object object) {
-        String json = new Gson().toJson(object);
+        String json = CommonUtils.toJson(object);
         saveString(key, json);
     }
 
@@ -130,12 +139,8 @@ public class PreferencesHelper {
      * @return The Object of the desired sharedPreference key or null if key doesn't exist
      */
     public <T> T getObject(String key, Class<T> classObject) {
-        try {
-            String json = getString(key);
-            return new Gson().fromJson(json, classObject);
-        } catch (Exception e) {
-            return null;
-        }
+        String json = getString(key);
+        return CommonUtils.fromJson(json, classObject);
     }
 
     /**

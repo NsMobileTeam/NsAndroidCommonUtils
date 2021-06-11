@@ -1,4 +1,4 @@
-package com.nextsense.nsutils;
+package com.nextsense.nsutils.commons;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,6 +9,9 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.nextsense.nsutils.UtilBase;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -129,5 +132,17 @@ public class CommonUtils {
         } catch (Exception ignore) {}
 
         return groups;
+    }
+
+    public static String toJson(Object object) {
+        return new Gson().toJson(object);
+    }
+
+    public static <T> T fromJson(String json, Class<T> classObject) {
+        try {
+            return new Gson().fromJson(json, classObject);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

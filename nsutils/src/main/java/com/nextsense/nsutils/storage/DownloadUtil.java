@@ -10,7 +10,7 @@ import android.os.Environment;
 
 import androidx.annotation.Nullable;
 
-import com.nextsense.nsutils.ResourceFetch;
+import com.nextsense.nsutils.commons.ResourceFetch;
 import com.nextsense.nsutils.UtilBase;
 
 import java.io.File;
