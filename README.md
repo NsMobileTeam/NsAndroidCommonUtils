@@ -31,7 +31,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.2'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.3'
     ...
   }
 ```
@@ -244,7 +244,7 @@ public static Locale getPreferredLocale(@Nullable Locale defaultLocale)
 public static Locale getCurrentAppLocale()
 ```
 
-Abstract class (handles ViewBindings): **NsActivity**:
+Abstract class (handles ViewBindings): **NsActivity<T extends ViewBinding>**:
 ```java
 //Loads fragment into container with optional(Nullable) animation (set of 4 animation resources)
 protected void loadFragment(Fragment fragment, @IdRes int containerId, boolean addToBackStack, @Nullable Integer[] animationSet)
@@ -257,7 +257,15 @@ protected void startActivity(Class<? extends NsActivity> activity, @Nullable Int
 //Starts another NsActivity with intent flags and an extra object passed as an argument
 protected void startActivity(Class<? extends NsActivity> activity, @Nullable Object extra, @Nullable Integer flags)
 //Gets the passed extra object
-protected <T> T getExtra()
+protected <S> S getExtra()
+```
+
+Abstract class (handles ViewBindings): **NsFragment<T extends ViewBinding>**:
+```java
+//Pass an extra serializable object to a newly created Fragment
+public void setExtra(@Nullable Object extra);
+//Gets the passed extra object
+protected <S> S getExtra()
 ```
 
 ## License

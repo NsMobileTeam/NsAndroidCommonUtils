@@ -1,5 +1,9 @@
 package com.nextsense.utilbundle;
 
+import android.annotation.SuppressLint;
+
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
 public class TestModel implements Serializable {
@@ -25,5 +29,12 @@ public class TestModel implements Serializable {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    @NonNull
+    @SuppressLint("DefaultLocale")
+    @Override
+    public String toString() {
+        return String.format("%s_%d", getName(), getNumber());
     }
 }

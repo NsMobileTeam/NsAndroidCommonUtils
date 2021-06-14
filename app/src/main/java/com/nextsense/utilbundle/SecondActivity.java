@@ -8,7 +8,13 @@ public class SecondActivity extends NsActivity<ActivitySecondBinding> {
     @Override
     protected void onCreate() {
         TestModel t = getExtra();
-        binding.passedContent.setText(String.format("%s_%d", t.getName(), t.getNumber()));
+        if(t != null) {
+            binding.passedContent.setText(t.toString());
+        }
+
+        MainFragment fragment = new MainFragment();
+        fragment.setExtra(new TestModel("Bawb", 234));
+        loadFragment(fragment, binding.mainContainer.getId(), true, null);
     }
 
     @Override

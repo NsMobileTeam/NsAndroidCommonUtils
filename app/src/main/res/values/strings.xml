@@ -3,4 +3,6 @@
     <string name="fileProviderName" translatable="false">com.nextsense.utilbundle.fileprovider</string>
     <string name="hide_keyboard">Hide Keyboard</string>
     <string name="locale_name">EN</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

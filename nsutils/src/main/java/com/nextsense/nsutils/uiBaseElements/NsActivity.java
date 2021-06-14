@@ -63,7 +63,7 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
      * Starts another NsActivity with no flags or extras
      * @param activity the activity that needs to be loaded
      */
-    protected void startActivity(Class<? extends NsActivity> activity) {
+    protected void startActivity(Class<? extends NsActivity<?>> activity) {
         startActivity(activity, null, null);
     }
 
@@ -72,7 +72,7 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
      * @param activity the activity that needs to be loaded
      * @param extra an extra serializable object to be passed to the new activity
      */
-    protected void startActivity(Class<? extends NsActivity> activity, @Nullable Object extra) {
+    protected void startActivity(Class<? extends NsActivity<?>> activity, @Nullable Object extra) {
         startActivity(activity, extra, null);
     }
 
@@ -81,7 +81,7 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
      * @param activity the activity that needs to be loaded
      * @param flags intent flags for the activity
      */
-    protected void startActivity(Class<? extends NsActivity> activity, @Nullable Integer flags) {
+    protected void startActivity(Class<? extends NsActivity<?>> activity, @Nullable Integer flags) {
         startActivity(activity, null, flags);
     }
 
@@ -91,7 +91,7 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
      * @param extra an extra serializable object to be passed to the new activity
      * @param flags intent flags for the activity
      */
-    protected void startActivity(Class<? extends NsActivity> activity, @Nullable Object extra, @Nullable Integer flags) {
+    protected void startActivity(Class<? extends NsActivity<?>> activity, @Nullable Object extra, @Nullable Integer flags) {
         Intent intent = new Intent(UtilBase.getContext(), activity);
         if(extra != null) {
             intent.putExtra(String.format("%s.%s", activity.getCanonicalName(), BUNDLE_EXTRA_OBJECT), CommonUtils.toJson(extra));
@@ -107,15 +107,15 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
 
     /**
      * Gets the passed extra object
-     * @param <T> class of the extra object
+     * @param <S> class of the extra object
      * @return the passed extra object
      */
     @SuppressWarnings("unchecked")
-    protected <T> T getExtra() {
+    protected <S> S getExtra() {
         try {
             String objectJson = getIntent().getStringExtra(String.format("%s.%s", getClass().getCanonicalName(), BUNDLE_EXTRA_OBJECT));
             String classCanonicalName = getIntent().getStringExtra(String.format("%s.%s", getClass().getCanonicalName(), BUNDLE_EXTRA_CLASS));
-            return (T) CommonUtils.fromJson(objectJson, Class.forName(classCanonicalName));
+            return (S) CommonUtils.fromJson(objectJson, Class.forName(classCanonicalName));
         } catch (Exception e) {
             return null;
         }
