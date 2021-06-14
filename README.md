@@ -19,11 +19,21 @@ allprojects {
 In build.gradle **(Module)**:
 
 ```gradle
-dependencies {
-  ...
-  implementation 'com.google.code.gson:gson:2.8.6'
-  implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.1'
-}
+  android {
+    ...
+    buildFeatures {
+      viewBinding true
+      dataBinding false
+    }
+    ...
+  }
+
+  dependencies {
+    ...
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.2'
+    ...
+  }
 ```
 
 **IMPORTANT** next steps:
@@ -42,7 +52,7 @@ public class AppExtension extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        UtilBase.init(this, R.string.fileProviderName);
+        UtilBase.init(this, R.string.fileProviderName, new Locale("mk"));
         // Resouce Example: <string translatable="false" name="fileProviderName">com.nextsense.utilbundle.fileprovider</string>
     }
 }
@@ -234,7 +244,7 @@ public static Locale getPreferredLocale(@Nullable Locale defaultLocale)
 public static Locale getCurrentAppLocale()
 ```
 
-Class: **NsActivity**:
+Abstract class (handles ViewBindings): **NsActivity**:
 ```java
 //Loads fragment into container with optional(Nullable) animation (set of 4 animation resources)
 protected void loadFragment(Fragment fragment, @IdRes int containerId, boolean addToBackStack, @Nullable Integer[] animationSet)

@@ -2,26 +2,41 @@ package com.nextsense.nsutils.uiBaseElements;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewbinding.ViewBinding;
 
 import com.nextsense.nsutils.UtilBase;
 import com.nextsense.nsutils.commons.CommonUtils;
 import com.nextsense.nsutils.locale.LocaleUtil;
 
-public abstract class NsActivity extends AppCompatActivity {
+public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivity {
     private static final String BUNDLE_EXTRA_OBJECT = "EXTRA_OBJECT";
     private static final String BUNDLE_EXTRA_CLASS = "EXTRA_CLASS";
 
+    protected T binding;
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected final void onCreate(@Nullable Bundle savedInstanceState) {
         LocaleUtil.applyCurrentLocale(this);
         super.onCreate(savedInstanceState);
+        setupBinding();
     }
+
+    private void setupBinding() {
+        binding = getBinding();
+        setContentView(binding.getRoot());
+        onCreate();
+    }
+
+    protected abstract void onCreate();
+
+    protected abstract T getBinding();
 
     /**
      * Loads fragment into container with optional(Nullable) animation (set of 4 animation resources)
