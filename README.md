@@ -3,7 +3,7 @@
 NsAndroidCommonUtils is an Android commonly used utility bundle library.
 
 ## Implementation
-Available on [JitPack](https://jitpack.io/#NsMobileTeam/NsAndroidCommonUtils)
+Available on [![](https://jitpack.io/v/NsMobileTeam/NsAndroidCommonUtils.svg)](https://jitpack.io/#NsMobileTeam/NsAndroidCommonUtils)
 
 In build.gradle **(Project)**:
 
