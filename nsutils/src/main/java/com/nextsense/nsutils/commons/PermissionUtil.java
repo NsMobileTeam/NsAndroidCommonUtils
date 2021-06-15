@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class PermissionUtil {
     private static final int BASE_REQUEST_CODE = 2393;
-    private static final int REQUEST_CODE_COUNTER = 1000000;
+    private static final int REQUEST_CODE_COUNTER = 10000000;
 
     private static final Map<String, Integer> permissionMap = new HashMap<>();
 

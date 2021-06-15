@@ -6,6 +6,7 @@ import com.nextsense.nsutils.commons.CommonUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
@@ -211,5 +212,75 @@ public class NsDate extends Date {
     public String toStringFormat(int divisor, String stringFormat, Object... objects) {
         stringFormat = stringFormat.replaceAll(DATE_STRING_KEYWORD, toStringMs(divisor));
         return String.format(stringFormat, objects);
+    }
+
+    /**
+     * Gets the year of this date
+     * @return year
+     */
+    public int year() {
+        return dateSegment(Calendar.YEAR);
+    }
+
+    /**
+     * Gets the native month (January == 0) of this date
+     * @return native month
+     */
+    public int monthNative() {
+        return dateSegment(Calendar.MONTH);
+    }
+
+    /**
+     * Gets the month (January == 1) of this date
+     * @return month
+     */
+    public int month() {
+        return dateSegment(Calendar.MONTH) + 1;
+    }
+
+    /**
+     * Gets the day of month of this date
+     * @return day of month
+     */
+    public int dayOfMonth() {
+        return dateSegment(Calendar.DAY_OF_MONTH);
+    }
+
+    /**
+     * Gets the hour of this date
+     * @return hour
+     */
+    public int hour() {
+        return dateSegment(Calendar.HOUR_OF_DAY);
+    }
+
+    /**
+     * Gets the minute of this date
+     * @return minute
+     */
+    public int minute() {
+        return dateSegment(Calendar.MINUTE);
+    }
+
+    /**
+     * Gets the second of this date
+     * @return second
+     */
+    public int second() {
+        return dateSegment(Calendar.SECOND);
+    }
+
+    /**
+     * Gets the millisecond of this date
+     * @return millisecond
+     */
+    public int millisecond() {
+        return dateSegment(Calendar.MILLISECOND);
+    }
+
+    private int dateSegment(int calendarConstant) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(this);
+        return c.get(calendarConstant);
     }
 }

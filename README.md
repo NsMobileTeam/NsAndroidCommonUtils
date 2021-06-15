@@ -31,7 +31,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.3'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.4'
     ...
   }
 ```
@@ -143,6 +143,32 @@ public String toStringMs(int divisor)
 public String toStringFormat(String stringFormat, Object... objects)
 //Get a formatted time string (divided by the divisor) using the keyword &DATE& to place a value of time
 public String toStringFormat(int divisor, String stringFormat, Object... objects)
+//Gets the year of this date
+public int year()
+//Gets the native month (January == 0) of this date
+public int monthNative()
+//Gets the month (January == 1) of this date
+public int month()
+//Gets the day of month of this date
+public int dayOfMonth()
+//Gets the hour of this date
+public int hour()
+//Gets the minute of this date
+public int minute()
+//Gets the second of this date
+public int second()
+//Gets the millisecond of this date
+public int millisecond()
+```
+
+Class: **NsDateDialog**:
+```java
+//Creates a date picker dialog
+public static void showDateDialog(FragmentManager fragmentManager, NsDate fromNsDate, NsDate toNsDate, NsDate selectedNsDate, IUniversalListener<NsDate> listener)
+//Creates a time picker dialog
+public static void showTimeDialog(FragmentManager fragmentManager, NsDate fromNsDate, NsDate toNsDate, NsDate selectedNsDate, IUniversalListener<NsDate> listener)
+//Creates a date and time picker dialog
+public static void showDateTimeDialog(FragmentManager fragmentManager, NsDate fromNsDate, NsDate toNsDate, NsDate selectedNsDate, IUniversalListener<NsDate> listener)
 ```
 
 Class: **PermissionUtil**:
@@ -244,7 +270,7 @@ public static Locale getPreferredLocale(@Nullable Locale defaultLocale)
 public static Locale getCurrentAppLocale()
 ```
 
-Abstract class (handles ViewBindings): **NsActivity<T extends ViewBinding>**:
+Abstract class (handles ViewBindings): **NsActivity&lt;T extends ViewBinding&gt;**:
 ```java
 //Loads fragment into container with optional(Nullable) animation (set of 4 animation resources)
 protected void loadFragment(Fragment fragment, @IdRes int containerId, boolean addToBackStack, @Nullable Integer[] animationSet)
@@ -260,12 +286,20 @@ protected void startActivity(Class<? extends NsActivity> activity, @Nullable Obj
 protected <S> S getExtra()
 ```
 
-Abstract class (handles ViewBindings): **NsFragment<T extends ViewBinding>**:
+Abstract class (handles ViewBindings): **NsFragment&lt;T extends ViewBinding&gt;**:
 ```java
 //Pass an extra serializable object to a newly created Fragment
 public void setExtra(@Nullable Object extra);
 //Gets the passed extra object
 protected <S> S getExtra()
+```
+
+Interface: **IUniversalListener&lt;T extends Object&gt;**:
+```java
+//Return object of class T if process ended successfully
+void onSuccess(T result)
+//return an exception if process failed
+void onFail(Exception e)
 ```
 
 ## License
