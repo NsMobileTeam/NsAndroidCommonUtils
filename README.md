@@ -8,6 +8,13 @@ Available on [![](https://jitpack.io/v/NsMobileTeam/NsAndroidCommonUtils.svg)](h
 In build.gradle **(Project)**:
 
 ```gradle
+buildscript {
+    repositories {
+      ...
+      maven { url 'https://jitpack.io' }
+    }
+  }
+
 allprojects {
   repositories {
     ...
@@ -25,7 +32,6 @@ In build.gradle **(Module)**:
       viewBinding true
       dataBinding false
     }
-    ...
   }
 
   dependencies {
