@@ -1,7 +1,6 @@
 package com.nextsense.nsutils;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -10,6 +9,7 @@ import com.nextsense.nsutils.locale.LocaleUtil;
 
 import java.util.Locale;
 
+@SuppressWarnings("unused")
 public class UtilBase {
     private static UtilBase base;
     private final Context appContext;

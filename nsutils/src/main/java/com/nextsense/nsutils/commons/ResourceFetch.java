@@ -16,6 +16,7 @@ import com.nextsense.nsutils.UtilBase;
 
 import java.util.Locale;
 
+@SuppressWarnings("unused")
 public class ResourceFetch {
 
     /**

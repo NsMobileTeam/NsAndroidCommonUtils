@@ -112,6 +112,7 @@ public class LocaleUtil {
      * Gets the currently set locale from app configuration
      * @return object of the currently set locale
      */
+    @SuppressWarnings("deprecation") //Handled by api check
     public static Locale getCurrentAppLocale() {
         if (CommonUtils.minApiLevel(Build.VERSION_CODES.N)) {
             return ResourceFetch.getConfiguration().getLocales().get(0);

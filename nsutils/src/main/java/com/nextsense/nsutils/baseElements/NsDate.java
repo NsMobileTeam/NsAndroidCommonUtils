@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+@SuppressWarnings("unused")
 public class NsDate extends Date {
     public static final String DATE_STRING_KEYWORD = "&DATE&";
 

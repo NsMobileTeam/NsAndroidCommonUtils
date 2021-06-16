@@ -1,10 +1,14 @@
 package com.nextsense.nsutils.uiBaseElements;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -13,12 +17,18 @@ import androidx.viewbinding.ViewBinding;
 
 import com.nextsense.nsutils.UtilBase;
 import com.nextsense.nsutils.commons.CommonUtils;
+import com.nextsense.nsutils.listeners.IUniversalListener;
 import com.nextsense.nsutils.locale.LocaleUtil;
 
+import java.util.Map;
+
+@SuppressWarnings({"unused", "SameParameterValue"})
 public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivity {
     private static final String BUNDLE_EXTRA_OBJECT = "EXTRA_OBJECT";
     private static final String BUNDLE_EXTRA_CLASS = "EXTRA_CLASS";
 
+    private ActivityResultLauncher<String[]> permissionLauncher;
+    private IUniversalListener<Map<String, Boolean>> permissionListener;
     protected T binding;
 
     @Override
@@ -31,12 +41,50 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
     private void setupBinding() {
         binding = getBinding();
         setContentView(binding.getRoot());
+        permissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), this::reportPermissionStatus);
         onCreate();
     }
 
     protected abstract void onCreate();
 
     protected abstract T getBinding();
+
+    /**
+     * Start request dialogs for each of the permissions
+     * @param permissionListener for handling the result of the request
+     * @param permissions list of permissions to be requested
+     */
+    public void requestPermissions(@NonNull IUniversalListener<Map<String, Boolean>> permissionListener, String... permissions) {
+        if(permissions != null && permissions.length > 0) {
+            this.permissionListener = permissionListener;
+            this.permissionLauncher.launch(permissions);
+        }
+    }
+
+    /**
+     * Determine whether all the listed permissions are granted
+     * @param permissionResult Map of the permissions requested
+     * @return True if all the listed permissions are granted, otherwise returns false
+     */
+    public boolean arePermissionsGranted(Map<String, Boolean> permissionResult) {
+        return arePermissionsGranted((String[]) permissionResult.keySet().toArray());
+    }
+
+    /**
+     * Determine whether all the listed permissions are granted
+     * @param permissions Array of any of the permissions defined in the Manifest.permission class
+     * @return True if all the listed permissions are granted, otherwise returns false
+     */
+    public boolean arePermissionsGranted(String... permissions) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            boolean arePermissionsGranted = true;
+            for (String permission : permissions) {
+                arePermissionsGranted &= (UtilBase.getContext().checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED);
+            }
+            return arePermissionsGranted;
+        }
+        return true;
+    }
 
     /**
      * Loads fragment into container with optional(Nullable) animation (set of 4 animation resources)
@@ -118,6 +166,13 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
             return (S) CommonUtils.fromJson(objectJson, Class.forName(classCanonicalName));
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    private void reportPermissionStatus(Map<String, Boolean> result) {
+        if(this.permissionListener != null) {
+            this.permissionListener.onSuccess(result);
+            this.permissionListener = null;
         }
     }
 }

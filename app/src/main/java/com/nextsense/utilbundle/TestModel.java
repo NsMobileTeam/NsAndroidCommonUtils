@@ -7,8 +7,8 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 
 public class TestModel implements Serializable {
-    private String name;
-    private int number;
+    private final String name;
+    private final int number;
 
     public TestModel(String name, int number) {
         this.name = name;
@@ -19,16 +19,8 @@ public class TestModel implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getNumber() {
         return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
     }
 
     @NonNull

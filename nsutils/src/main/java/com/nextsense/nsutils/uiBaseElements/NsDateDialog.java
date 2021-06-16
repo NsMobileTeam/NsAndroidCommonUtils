@@ -18,6 +18,7 @@ import com.nextsense.nsutils.listeners.IUniversalListener;
 
 import java.util.Calendar;
 
+@SuppressWarnings("unused")
 public class NsDateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     public static final NsDate MAX_DATE = new NsDate(126144000000000L);
     public static final NsDate MIN_DATE = new NsDate(-62125920000000L);

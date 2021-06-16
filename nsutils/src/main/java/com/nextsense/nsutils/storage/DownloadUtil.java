@@ -19,9 +19,8 @@ import static com.nextsense.nsutils.storage.FileUtil.fileNameFromUrl;
 import static com.nextsense.nsutils.storage.FileUtil.fullFileNameFromUrl;
 import static com.nextsense.nsutils.storage.FileUtil.mimeTypeOf;
 
+@SuppressWarnings("unused")
 public class DownloadUtil {
-
-
     /**
      * Download a file from a HTTP url into the internal storage
      * @param url HTTP link

@@ -3,10 +3,10 @@ package com.nextsense.nsutils.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.gson.Gson;
 import com.nextsense.nsutils.UtilBase;
 import com.nextsense.nsutils.commons.CommonUtils;
 
+@SuppressWarnings("unused")
 public class PreferencesHelper {
     private final SharedPreferences preferences;
 

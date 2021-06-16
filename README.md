@@ -37,7 +37,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.4'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.5'
     ...
   }
 ```
@@ -88,6 +88,8 @@ public static boolean maxApiLevel(int apiLevel)
 public static Bitmap drawableToBitmap(Drawable drawable)
 //Get a list of Strings(Groups) that match a regex pattern in a text string
 public static ArrayList<String> regexSearch(String text, String regex)  
+//Opens the app settings of the current app
+public static void openAppSettings()
 ```
 Class: **ResourceFetch**:
 ```java
@@ -101,6 +103,10 @@ public static Drawable getDrawable(@DrawableRes int drawableId)
 public static Bitmap getDrawableBitmap(@DrawableRes int drawableId)
 //Get a color integer from its resource id
 public static int getColor(@ColorRes int colorId)
+//Get the app resources
+public static Resources getResources()
+//Get the app configuration
+public static Configuration getConfiguration()
 //Get a System Service by the class object of the desired system service
 public static <T> T getSystemService(Class<T> serviceClass)
 ```
@@ -175,20 +181,6 @@ public static void showDateDialog(FragmentManager fragmentManager, NsDate fromNs
 public static void showTimeDialog(FragmentManager fragmentManager, NsDate fromNsDate, NsDate toNsDate, NsDate selectedNsDate, IUniversalListener<NsDate> listener)
 //Creates a date and time picker dialog
 public static void showDateTimeDialog(FragmentManager fragmentManager, NsDate fromNsDate, NsDate toNsDate, NsDate selectedNsDate, IUniversalListener<NsDate> listener)
-```
-
-Class: **PermissionUtil**:
-```java
-//Determine whether all the listed permissions are granted
-public static boolean arePermissionsGranted(String... permissions)
-//Request listed permissions from the context of an Activity
-public static void requestPermissions(Activity activity, String... permissions)
-//Request listed permissions from the context of a Fragment
-public static void requestPermission(Fragment fragment, String... permissions)
-//Opens the app settings of the current app
-public static void openAppSettings()
-//Gets a unique request code for the listed permissions
-public static int requestCodeFor(String... permissions)
 ```
 
 Class: **FileUtil**:
@@ -280,6 +272,12 @@ Abstract class (handles ViewBindings): **NsActivity&lt;T extends ViewBinding&gt;
 ```java
 //Loads fragment into container with optional(Nullable) animation (set of 4 animation resources)
 protected void loadFragment(Fragment fragment, @IdRes int containerId, boolean addToBackStack, @Nullable Integer[] animationSet)
+//Start request dialogs for each of the permissions
+public void requestPermissions(IUniversalListener<Map<String, Boolean>> permissionListener, String... permissions)
+//Determine whether all the listed permissions are granted
+public boolean arePermissionsGranted(Map<String, Boolean> permissionResult)
+//Determine whether all the listed permissions are granted
+public boolean arePermissionsGranted(String... permissions)
 //Starts another NsActivity with no flags or extras
 protected void startActivity(Class<? extends NsActivity> activity)
 //Starts another NsActivity with an extra object passed as an argument with no flags

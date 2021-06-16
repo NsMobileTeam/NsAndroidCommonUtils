@@ -1,10 +1,13 @@
 package com.nextsense.nsutils.commons;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("unused")
 public class CommonUtils {
     /**
      * Display a toast message
@@ -144,5 +148,16 @@ public class CommonUtils {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    /**
+     * Opens the app settings of the current app
+     */
+    public static void openAppSettings() {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", UtilBase.getContext().getPackageName(), null);
+        intent.setData(uri);
+        UtilBase.getContext().startActivity(intent);
     }
 }
