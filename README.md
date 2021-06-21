@@ -37,7 +37,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.5'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.6'
     ...
   }
 ```
@@ -266,6 +266,44 @@ public static void setLocale(Context context, Locale locale)
 public static Locale getPreferredLocale(@Nullable Locale defaultLocale)
 //Gets the currently set locale from app configuration
 public static Locale getCurrentAppLocale()
+```
+
+Class: **EncryptionUtil**:
+```java
+//Gets an overly complicated secure random generator
+public static SecureRandom secureRandomInstance()
+//Get a secure random array
+public static byte[] secureRandom(int byteNum)
+//Sign any type of data
+public static byte[] signData(KeyPair keyPair, String algorithm, byte[] data)
+//Asymmetric encryption of any data
+public static byte[] encrypt(PublicKey publicKey, String algorithm, byte[] plainText)
+//Asymmetric decryption of any data
+public static byte[] decrypt(PrivateKey privateKey, String algorithm, byte[] cipherText)
+//Generate an Private/Public key pair
+public static KeyPair generateKeyPair(String algorithm, int keySize)
+//Derive secret key from a string password
+public static SecretKey deriveSecretKey(String algorithm, String keyFactoryAlgorithm, int iterationCount, int keyLength, String password)
+//Derive secret key from a string password with salt
+public static SecretKey deriveSecretKey(String algorithm, String keyFactoryAlgorithm, int iterationCount, int keyLength, String password)
+//Derive secret key from bytes
+public static SecretKey deriveSecretKey(byte[] keyBytes, String algorithm)
+//Get a randomized iv parameter spec
+public static IvParameterSpec randomIv(int ivSize)
+//Symmetric encryption of a plaintext
+public static byte[] encrypt(String algorithm, SecretKey secretKey, IvParameterSpec cbcIv, byte[] plaintext)
+//Symmetric decryption of a ciphertext
+public static byte[] decrypt(String algorithm, SecretKey secretKey, IvParameterSpec cbcIv, byte[] ciphertext)
+```
+
+Class: **EncryptionUtil.TOTP**:
+```java
+//Generate the current TOTP
+public static int generate(byte[] secret)
+//Generate a TOTP for a custom time
+public static int generate(byte[] secret, long timeMillis)
+//Generate a very customized TOTP
+public static int generate(byte[] secret, long timeMillis, @Nullable Long validityTimeMillis, @Nullable Integer codeDigits, @Nullable String hashAlgorithm)
 ```
 
 Abstract class (handles ViewBindings): **NsActivity&lt;T extends ViewBinding&gt;**:
