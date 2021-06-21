@@ -248,6 +248,12 @@ public static void downloadUrl(String url, boolean publicFile, @Nullable Downloa
 public static void downloadUrl(String url, @Nullable String subDirectory, boolean notification, boolean publicFile, @Nullable DownloadUtil.DownloadCallback callback)
 ```
 
+Class: **Safe**:
+```java
+//Null-safe string value of any object
+public static <T> String text(T value)
+```
+
 Class: **LocaleUtil**:
 ```java
 //Initialises and sets application locale
