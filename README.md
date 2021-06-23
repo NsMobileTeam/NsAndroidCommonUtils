@@ -3,7 +3,7 @@
 NsAndroidCommonUtils is an Android commonly used utility bundle library.
 
 ## Implementation
-Available on [![](https://jitpack.io/v/NsMobileTeam/NsAndroidCommonUtils.svg)](https://jitpack.io/#NsMobileTeam/NsAndroidCommonUtils)
+[![](https://jitpack.io/v/NsMobileTeam/NsAndroidCommonUtils.svg)](https://jitpack.io/#NsMobileTeam/NsAndroidCommonUtils)
 
 In build.gradle **(Project)**:
 
@@ -37,7 +37,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.6'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.7'
     ...
   }
 ```
@@ -315,7 +315,7 @@ public static int generate(byte[] secret, long timeMillis, @Nullable Long validi
 Abstract class (handles ViewBindings): **NsActivity&lt;T extends ViewBinding&gt;**:
 ```java
 //Loads fragment into container with optional(Nullable) animation (set of 4 animation resources)
-protected void loadFragment(Fragment fragment, @IdRes int containerId, boolean addToBackStack, @Nullable Integer[] animationSet)
+public void loadFragment(Fragment fragment, @IdRes int containerId, boolean addToBackStack, @Nullable Integer[] animationSet)
 //Start request dialogs for each of the permissions
 public void requestPermissions(IUniversalListener<Map<String, Boolean>> permissionListener, String... permissions)
 //Determine whether all the listed permissions are granted
@@ -323,13 +323,13 @@ public boolean arePermissionsGranted(Map<String, Boolean> permissionResult)
 //Determine whether all the listed permissions are granted
 public boolean arePermissionsGranted(String... permissions)
 //Starts another NsActivity with no flags or extras
-protected void startActivity(Class<? extends NsActivity> activity)
+public void startActivity(Class<? extends NsActivity> activity)
 //Starts another NsActivity with an extra object passed as an argument with no flags
-protected void startActivity(Class<? extends NsActivity> activity, @Nullable Object extra)
+public void startActivity(Class<? extends NsActivity> activity, @Nullable Object extra)
 //Starts another NsActivity with intent flags with no extras
-protected void startActivity(Class<? extends NsActivity> activity, @Nullable Integer flags)
+public void startActivity(Class<? extends NsActivity> activity, @Nullable Integer flags)
 //Starts another NsActivity with intent flags and an extra object passed as an argument
-protected void startActivity(Class<? extends NsActivity> activity, @Nullable Object extra, @Nullable Integer flags)
+public void startActivity(Class<? extends NsActivity> activity, @Nullable Object extra, @Nullable Integer flags)
 //Gets the passed extra object
 protected <S> S getExtra()
 ```
@@ -338,6 +338,10 @@ Abstract class (handles ViewBindings): **NsFragment&lt;T extends ViewBinding&gt;
 ```java
 //Pass an extra serializable object to a newly created Fragment
 public void setExtra(@Nullable Object extra);
+//Loads fragment into container within the parent activity with optional(Nullable) animation (set of 4 animation resources)
+public void loadFragment(Fragment fragment, @IdRes int containerId, boolean addToBackStack, @Nullable Integer[] animationSet)
+//Get a NsActivity if fragment is loaded from a NsActivity
+public NsActivity<?> getNsActivity()
 //Gets the passed extra object
 protected <S> S getExtra()
 ```

@@ -93,7 +93,7 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
      * @param addToBackStack fragment to be added in back stack or no
      * @param animationSet nullable set of 4 animation resources used to animate the fragment transaction
      */
-    protected void loadFragment(Fragment fragment, @IdRes int containerId, boolean addToBackStack, @Nullable Integer[] animationSet) {
+    public void loadFragment(Fragment fragment, @IdRes int containerId, boolean addToBackStack, @Nullable Integer[] animationSet) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if(animationSet != null && animationSet.length >= 4) {
             fragmentTransaction.setCustomAnimations(animationSet[0], animationSet[1], animationSet[2], animationSet[3]);
@@ -111,7 +111,7 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
      * Starts another NsActivity with no flags or extras
      * @param activity the activity that needs to be loaded
      */
-    protected void startActivity(Class<? extends NsActivity<?>> activity) {
+    public void startActivity(Class<? extends NsActivity<?>> activity) {
         startActivity(activity, null, null);
     }
 
@@ -120,7 +120,7 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
      * @param activity the activity that needs to be loaded
      * @param extra an extra serializable object to be passed to the new activity
      */
-    protected void startActivity(Class<? extends NsActivity<?>> activity, @Nullable Object extra) {
+    public void startActivity(Class<? extends NsActivity<?>> activity, @Nullable Object extra) {
         startActivity(activity, extra, null);
     }
 
@@ -129,7 +129,7 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
      * @param activity the activity that needs to be loaded
      * @param flags intent flags for the activity
      */
-    protected void startActivity(Class<? extends NsActivity<?>> activity, @Nullable Integer flags) {
+    public void startActivity(Class<? extends NsActivity<?>> activity, @Nullable Integer flags) {
         startActivity(activity, null, flags);
     }
 
@@ -139,7 +139,7 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
      * @param extra an extra serializable object to be passed to the new activity
      * @param flags intent flags for the activity
      */
-    protected void startActivity(Class<? extends NsActivity<?>> activity, @Nullable Object extra, @Nullable Integer flags) {
+    public void startActivity(Class<? extends NsActivity<?>> activity, @Nullable Object extra, @Nullable Integer flags) {
         Intent intent = new Intent(UtilBase.getContext(), activity);
         if(extra != null) {
             intent.putExtra(String.format("%s.%s", activity.getCanonicalName(), BUNDLE_EXTRA_OBJECT), CommonUtils.toJson(extra));
