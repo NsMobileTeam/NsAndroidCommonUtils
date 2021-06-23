@@ -37,7 +37,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.7'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.8'
     ...
   }
 ```
@@ -344,6 +344,12 @@ public void loadFragment(Fragment fragment, @IdRes int containerId, boolean addT
 public NsActivity<?> getNsActivity()
 //Gets the passed extra object
 protected <S> S getExtra()
+```
+
+ViewHolder class (handles ViewBindings): **UniHolder&lt;T extends ViewBinding&gt;**:
+```java
+//Create a universal recycler ViewHolder
+public UniHolder(@NonNull View itemView, T binding)
 ```
 
 Interface: **IUniversalListener&lt;T extends Object&gt;**:
