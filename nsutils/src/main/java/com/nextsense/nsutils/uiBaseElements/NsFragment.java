@@ -10,6 +10,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewbinding.ViewBinding;
 
@@ -114,5 +115,12 @@ public abstract class NsFragment<T extends ViewBinding> extends Fragment {
      */
     public void onBack() {
         parentActivity.onBackPressed();
+    }
+
+    /**
+     * Pop the entire fragment backstack
+     */
+    public void popBackstack() {
+        getParentFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }

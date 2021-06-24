@@ -37,7 +37,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.9'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.4.0'
     ...
   }
 ```
@@ -348,8 +348,15 @@ public NsActivity<?> getNsActivity()
 public Activity getParent()
 //Pop the main backstack
 public void onBack()
+//Pop the entire fragment backstack
+public void popBackstack()
 //Gets the passed extra object
 protected <S> S getExtra()
+```
+
+Abstract class (handles ViewBindings): **NsDialog&lt;T extends ViewBinding&gt;**:
+```java
+//abstract setup of a full screen dialog 
 ```
 
 ViewHolder class (handles ViewBindings): **UniHolder&lt;T extends ViewBinding&gt;**:
