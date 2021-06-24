@@ -19,7 +19,7 @@ public abstract class NsDialog<T extends ViewBinding> extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = getBinding();
+        binding = getBinding(inflater, container, savedInstanceState);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         onCreated();
@@ -28,7 +28,7 @@ public abstract class NsDialog<T extends ViewBinding> extends DialogFragment {
 
     public abstract void onCreated();
 
-    public abstract T getBinding();
+    public abstract T getBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 
     @NonNull
     @Override
