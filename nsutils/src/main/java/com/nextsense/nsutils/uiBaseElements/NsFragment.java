@@ -1,5 +1,6 @@
 package com.nextsense.nsutils.uiBaseElements;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,25 +9,27 @@ import android.view.ViewGroup;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewbinding.ViewBinding;
 
 import java.io.Serializable;
 
+@SuppressWarnings("unused")
 public abstract class NsFragment<T extends ViewBinding> extends Fragment {
     private static final String BUNDLE_EXTRA_OBJECT = "EXTRA_OBJECT";
 
     protected T binding;
     private NsActivity<?> activity;
+    private Activity parentActivity;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.binding = getBinding(inflater);
-        if(getActivity() instanceof NsActivity) {
-            activity = (NsActivity<?>) getActivity();
+        parentActivity = getActivity();
+        if(parentActivity instanceof NsActivity) {
+            activity = (NsActivity<?>) parentActivity;
         }
 
         onCreateView();
@@ -96,5 +99,20 @@ public abstract class NsFragment<T extends ViewBinding> extends Fragment {
     @Nullable
     public NsActivity<?> getNsActivity() {
         return activity;
+    }
+
+    /**
+     * Get the parent activity
+     * @return NonNull instance of an activity
+     */
+    public Activity getParent() {
+        return parentActivity;
+    }
+
+    /**
+     * Pop the main backstack
+     */
+    public void onBack() {
+        parentActivity.onBackPressed();
     }
 }

@@ -2,6 +2,7 @@ package com.nextsense.nsutils.commons;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,6 +13,8 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
+import androidx.annotation.ColorInt;
 
 import com.google.gson.Gson;
 import com.nextsense.nsutils.UtilBase;
@@ -159,5 +162,14 @@ public class CommonUtils {
         Uri uri = Uri.fromParts("package", UtilBase.getContext().getPackageName(), null);
         intent.setData(uri);
         UtilBase.getContext().startActivity(intent);
+    }
+
+    /**
+     * Get a color state list for changing a view tint programmatically
+     * @param color color integer
+     * @return ColorStateList
+     */
+    public static ColorStateList getBackgroundTint(@ColorInt int color) {
+        return new ColorStateList(new int[][]{new int[] { android.R.attr.state_enabled }}, new int[]{ color });
     }
 }

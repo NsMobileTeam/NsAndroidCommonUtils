@@ -37,7 +37,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.8'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.3.9'
     ...
   }
 ```
@@ -90,6 +90,8 @@ public static Bitmap drawableToBitmap(Drawable drawable)
 public static ArrayList<String> regexSearch(String text, String regex)  
 //Opens the app settings of the current app
 public static void openAppSettings()
+//Get a color state list for changing a view tint programmatically
+public static ColorStateList getBackgroundTint(@ColorInt int color)
 ```
 Class: **ResourceFetch**:
 ```java
@@ -342,6 +344,10 @@ public void setExtra(@Nullable Object extra);
 public void loadFragment(Fragment fragment, @IdRes int containerId, boolean addToBackStack, @Nullable Integer[] animationSet)
 //Get a NsActivity if fragment is loaded from a NsActivity
 public NsActivity<?> getNsActivity()
+//Get the parent activity
+public Activity getParent()
+//Pop the main backstack
+public void onBack()
 //Gets the passed extra object
 protected <S> S getExtra()
 ```
