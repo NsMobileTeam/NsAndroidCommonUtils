@@ -37,7 +37,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.4.0'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.4.1'
     ...
   }
 ```
@@ -356,13 +356,18 @@ protected <S> S getExtra()
 
 Abstract class (handles ViewBindings): **NsDialog&lt;T extends ViewBinding&gt;**:
 ```java
-//abstract setup of a full screen dialog 
+//abstract setup of a full screen dialog
 ```
 
 ViewHolder class (handles ViewBindings): **UniHolder&lt;T extends ViewBinding&gt;**:
 ```java
 //Create a universal recycler ViewHolder
-public UniHolder(@NonNull View itemView, T binding)
+public UniHolder(T binding)
+```
+
+ViewHolder class (handles ViewBindings): **NsAdapter&lt;T extends ViewBinding&gt;**:
+```java
+//Create a universal recycler Item Adapter 
 ```
 
 Interface: **IUniversalListener&lt;T extends Object&gt;**:
