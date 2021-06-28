@@ -37,7 +37,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.4.4'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.4.5'
     ...
   }
 ```
