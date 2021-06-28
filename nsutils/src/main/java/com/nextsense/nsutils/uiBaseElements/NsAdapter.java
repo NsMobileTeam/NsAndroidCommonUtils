@@ -11,10 +11,10 @@ public abstract class NsAdapter<T extends ViewBinding> extends RecyclerView.Adap
     @NonNull
     @Override
     public final UniHolder<T> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new UniHolder<>(getBinding(LayoutInflater.from(parent.getContext())));
+        return new UniHolder<>(getBinding(LayoutInflater.from(parent.getContext()), parent));
     }
 
-    public abstract T getBinding(LayoutInflater inflater);
+    public abstract T getBinding(LayoutInflater inflater, ViewGroup parent);
 
     @Override
     public abstract void onBindViewHolder(@NonNull UniHolder<T> holder, int position);
