@@ -37,7 +37,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.4.1'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.4.2'
     ...
   }
 ```
@@ -367,7 +367,7 @@ public UniHolder(T binding)
 
 ViewHolder class (handles ViewBindings): **NsAdapter&lt;T extends ViewBinding&gt;**:
 ```java
-//Create a universal recycler Item Adapter 
+//Create a universal recycler Item Adapter
 ```
 
 Interface: **IUniversalListener&lt;T extends Object&gt;**:
