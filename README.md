@@ -37,7 +37,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.4.3'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.4.4'
     ...
   }
 ```
@@ -92,6 +92,15 @@ public static ArrayList<String> regexSearch(String text, String regex)
 public static void openAppSettings()
 //Get a color state list for changing a view tint programmatically
 public static ColorStateList getBackgroundTint(@ColorInt int color)
+//Converts any serializable object or array of objects into a json string
+public static <T> String toJson(T object)
+//Parse a json into a serializable object of type T
+public static <T> T fromJson(String json, Class<T> classObject)
+//Parse a json into a serializable array of objects of type T
+public static <T> ArrayList<T> fromJsonArray(String jsonArray, Class<T> itemClass)
+//Get application name
+public static String getAppName()
+
 ```
 Class: **ResourceFetch**:
 ```java
@@ -207,11 +216,15 @@ public static void openUri(Uri uri)
 public static File fileFromUri(Uri uri)
 ```
 
-Class: **PreferencesHelper**:
+Class: **NsPrefs**:
 ```java
 ////Constructors:
+//Get default app shared preference
+public static NsPrefs get()
 //Get or create a new sharedPreference bundle by Name
-public PreferencesHelper(String name)
+public static NsPrefs get(String name)
+//Get or create a new sharedPreference bundle by Name
+public NsPrefs(String name)
 
 ////Methods:
 //Save a boolean value for a String key in the sharedPreferences

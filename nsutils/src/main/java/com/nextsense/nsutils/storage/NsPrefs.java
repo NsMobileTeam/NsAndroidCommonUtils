@@ -6,24 +6,35 @@ import android.content.SharedPreferences;
 import com.nextsense.nsutils.UtilBase;
 import com.nextsense.nsutils.commons.CommonUtils;
 
+import java.util.ArrayList;
+
 @SuppressWarnings("unused")
-public class PreferencesHelper {
+public class NsPrefs {
     private final SharedPreferences preferences;
 
     /**
      * Get or create a new sharedPreference bundle by Name
-     * @param name Name of the sharedPreference
+     * @param name of the sharedPreference
      */
-    public PreferencesHelper(String name) {
+    public NsPrefs(String name) {
         preferences = UtilBase.getContext().getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
     /**
-     * Get or create a new sharedPreference bundle by Name
-     * @param name Name of the sharedPreference
+     * Get default app shared preference
+     * @return the default preference
      */
-    public static PreferencesHelper get(String name) {
-        return new PreferencesHelper(name);
+    public static NsPrefs get() {
+        return get(String.format("%sPrefs", CommonUtils.getAppName()));
+    }
+
+    /**
+     * Get or create a new sharedPreference bundle by Name
+     * @param name of the sharedPreference
+     * @return a preference by the name from the parameters
+     */
+    public static NsPrefs get(String name) {
+        return new NsPrefs(name);
     }
 
     /**
@@ -73,14 +84,23 @@ public class PreferencesHelper {
         editor.apply();
     }
 
-
     /**
      * Save a serializable Object value for a String key in the sharedPreferences
      * @param key Value of the entry key
      * @param object Value of the Object
      */
-    public void saveObject(String key, Object object) {
+    public <T> void saveObject(String key, T object) {
         String json = CommonUtils.toJson(object);
+        saveString(key, json);
+    }
+
+    /**
+     * Save a serializable list for a String key in the sharedPreferences
+     * @param key Value of the entry key
+     * @param list of the Objects
+     */
+    public <T> void saveList(String key, ArrayList<T> list) {
+        String json = CommonUtils.toJson(list);
         saveString(key, json);
     }
 
@@ -141,6 +161,16 @@ public class PreferencesHelper {
     public <T> T getObject(String key, Class<T> classObject) {
         String json = getString(key);
         return CommonUtils.fromJson(json, classObject);
+    }
+
+    /**
+     * Get any serializable list from shared preferences by its key
+     * @param key Value of the entry key
+     * @return The Object of the desired sharedPreference key or null if key doesn't exist
+     */
+    public <T> ArrayList<T> getList(String key, Class<T> classObject) {
+        String json = getString(key);
+        return CommonUtils.fromJsonArray(json, classObject);
     }
 
     /**

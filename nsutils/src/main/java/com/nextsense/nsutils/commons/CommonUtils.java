@@ -2,6 +2,7 @@ package com.nextsense.nsutils.commons;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -17,6 +18,9 @@ import android.widget.Toast;
 import androidx.annotation.ColorInt;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.nextsense.nsutils.UtilBase;
 
 import java.util.ArrayList;
@@ -141,16 +145,49 @@ public class CommonUtils {
         return groups;
     }
 
-    public static String toJson(Object object) {
+    /**
+     * Converts any serializable object or array of objects into a json string
+     * @param object any serializable object or array
+     * @return json string
+     */
+    public static <T> String toJson(T object) {
         return new Gson().toJson(object);
     }
 
+    /**
+     * Parse a json into a serializable object of type T
+     * @param json a valid json string
+     * @param classObject class object of T type
+     * @param <T> returning class
+     * @return an object of type T
+     */
     public static <T> T fromJson(String json, Class<T> classObject) {
         try {
             return new Gson().fromJson(json, classObject);
         } catch (Exception e) {
             return null;
         }
+    }
+
+    /**
+     * Parse a json into a serializable array of objects of type T
+     * @param jsonArray a valid jsonArray string
+     * @param itemClass class object of the items within the ArrayList
+     * @param <T> returning class
+     * @return a serializable array of objects of type T
+     */
+    public static <T> ArrayList<T> fromJsonArray(String jsonArray, Class<T> itemClass) {
+        ArrayList<T> list = null;
+        try {
+            Gson gson = new Gson();
+            JsonArray arry = JsonParser.parseString(jsonArray).getAsJsonArray();
+            list = new ArrayList<>();
+            for (JsonElement jsonElement : arry) {
+                list.add(gson.fromJson(jsonElement, itemClass));
+            }
+        } catch (Exception ignore) { }
+
+        return list;
     }
 
     /**
@@ -171,5 +208,15 @@ public class CommonUtils {
      */
     public static ColorStateList getBackgroundTint(@ColorInt int color) {
         return new ColorStateList(new int[][]{new int[] { android.R.attr.state_enabled }}, new int[]{ color });
+    }
+
+    /**
+     * Get application name
+     * @return name of app
+     */
+    public static String getAppName() {
+        ApplicationInfo applicationInfo = UtilBase.getContext().getApplicationInfo();
+        int stringId = applicationInfo.labelRes;
+        return stringId == 0 ? applicationInfo.nonLocalizedLabel.toString() : ResourceFetch.getString(stringId);
     }
 }

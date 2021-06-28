@@ -13,13 +13,13 @@ import androidx.annotation.Nullable;
 import com.nextsense.nsutils.UtilBase;
 import com.nextsense.nsutils.commons.CommonUtils;
 import com.nextsense.nsutils.commons.ResourceFetch;
-import com.nextsense.nsutils.storage.PreferencesHelper;
+import com.nextsense.nsutils.storage.NsPrefs;
 
 import java.util.Locale;
 
 public class LocaleUtil {
     private static final String LOCALE_PREF_NAME = "PreferredLocaleSetting";
-    private static final PreferencesHelper LOCALE_PREFERENCE = PreferencesHelper.get("AppLocalePreference");
+    private static final NsPrefs LOCALE_PREFERENCE = NsPrefs.get("AppLocalePreference");
 
     /**
      * Initialises and sets application locale
