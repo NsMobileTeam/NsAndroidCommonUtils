@@ -206,7 +206,7 @@ public class CommonUtils {
      * @param color color integer
      * @return ColorStateList
      */
-    public static ColorStateList getBackgroundTint(@ColorInt int color) {
+    public static ColorStateList getTint(@ColorInt int color) {
         return new ColorStateList(new int[][]{new int[] { android.R.attr.state_enabled }}, new int[]{ color });
     }
 

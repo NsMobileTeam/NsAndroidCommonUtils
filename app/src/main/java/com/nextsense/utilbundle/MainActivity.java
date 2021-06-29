@@ -26,12 +26,7 @@ public class MainActivity extends NsActivity<ActivityMainBinding> {
         ArrayList<Pair<String, String>> presets = new ArrayList<>();
         presets.add(new Pair<>("username", "Boban"));
         presets.add(new Pair<>("password", "P@ssw0rd"));
-        NsQuickDialog.show(this, R.layout.simple_name_dialog, presets, new IUniversalListener<ArrayList<Pair<String, String>>>() {
-            @Override
-            public void onSuccess(ArrayList<Pair<String, String>> result) {
-                Log.d("","");
-            }
-        });
+        NsQuickDialog.show(this, R.layout.simple_name_dialog, presets, result -> Log.d("",""));
     }
 
     @Override

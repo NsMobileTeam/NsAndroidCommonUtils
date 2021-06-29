@@ -37,7 +37,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.5.0'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.5.1'
     ...
   }
 ```
@@ -91,7 +91,7 @@ public static ArrayList<String> regexSearch(String text, String regex)
 //Opens the app settings of the current app
 public static void openAppSettings()
 //Get a color state list for changing a view tint programmatically
-public static ColorStateList getBackgroundTint(@ColorInt int color)
+public static ColorStateList getTint(@ColorInt int color)
 //Converts any serializable object or array of objects into a json string
 public static <T> String toJson(T object)
 //Parse a json into a serializable object of type T
