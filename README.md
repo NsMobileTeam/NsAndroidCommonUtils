@@ -420,7 +420,6 @@ public void setCurrentItem(int item)
 
 Dialog class: **NsQuickDialog**:
 ```xml
-<!-- OPTIONAL -->
 <Button
   android:id="@+id/buttonOk"
   ...
