@@ -37,7 +37,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.4.5'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.4.7'
     ...
   }
 ```
@@ -389,6 +389,30 @@ Interface: **IUniversalListener&lt;T extends Object&gt;**:
 void onSuccess(T result)
 //return an exception if process failed
 void onFail(Exception e)
+```
+
+View: **NsFragmentPager**:
+```xml
+<com.nextsense.nsutils.uiBaseElements.fragmentPager.NsFragmentPager
+        android:id="@+id/lpMain"
+        ...
+        app:menuId="@menu/nav_menu"/>
+```
+```java
+//Attach the Fragment pager to a bottom navigation view
+public void attachToNavigationView(BottomNavigationView navigationView)
+//Load the fragments in the page layouts in the order that are added
+public void loadFragments(FragmentManager fragmentManager, Fragment... fragments)
+//Set menu by menuId and the viewPages
+public void setMenu(@MenuRes int menuId)
+//Setup ViewPages according to a menu
+public void setPagesForMenu(Menu menu)
+//Go to the next page in the pager
+public int nextPage();
+//Go to the previous page in the pager
+public int previousPage()
+//Set current page and navigation menu selected item
+public void setCurrentItem(int item)
 ```
 
 ## License

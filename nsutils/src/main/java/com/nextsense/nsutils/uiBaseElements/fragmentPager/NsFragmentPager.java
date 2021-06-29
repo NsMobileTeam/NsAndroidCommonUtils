@@ -32,6 +32,7 @@ public class NsFragmentPager extends ViewPager implements BottomNavigationView.O
 
     private int currentPagePosition = 0;
     private NsFragmentPagerAdapter layoutPagerAdapter;
+    private BottomNavigationView navigationView;
     private Menu menu;
 
     public NsFragmentPager(Context context) {
@@ -41,6 +42,7 @@ public class NsFragmentPager extends ViewPager implements BottomNavigationView.O
 
     public NsFragmentPager(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setAttributes(attrs);
         setup();
     }
 
@@ -57,23 +59,52 @@ public class NsFragmentPager extends ViewPager implements BottomNavigationView.O
         this.setScrollDuration(400);
     }
 
+    /**
+     * Set menu by menuId and the viewPages
+     * @param menuId resource of the menu in question
+     */
     @SuppressLint("ResourceType")
     public void setMenu(@MenuRes int menuId) {
         try {
             PopupMenu p = new PopupMenu(getContext(), null);
             menu = p.getMenu();
             ((Activity) getContext()).getMenuInflater().inflate(menuId, menu);
-            for (int i = 0; i < menu.size(); i++) {
-                FragmentContainerView view = new FragmentContainerView(getContext());
-                view.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                view.setId((int) (Math.random() * Integer.MAX_VALUE));
-                addView(view);
-            }
+            setPagesForMenu(menu);
         } catch (Exception e) {
             throw new InvalidParameterException("No or invalid menuId set for the Pager");
         }
     }
 
+    /**
+     * Setup ViewPages according to a menu
+     * @param menu object for the setup
+     */
+    public void setPagesForMenu(Menu menu) {
+        this.menu = menu;
+        removeAllViews();
+        for (int i = 0; i < menu.size(); i++) {
+            FragmentContainerView view = new FragmentContainerView(getContext());
+            view.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            view.setId((int) (Math.random() * Integer.MAX_VALUE));
+            addView(view);
+        }
+    }
+
+    /**
+     * Attach the Fragment pager to a bottom navigation view
+     * @param navigationView object for the setup
+     */
+    public void attachToNavigationView(BottomNavigationView navigationView) {
+        this.navigationView = navigationView;
+        navigationView.setOnNavigationItemSelectedListener(this);
+        setPagesForMenu(navigationView.getMenu());
+    }
+
+    /**
+     * Load the fragments in the page layouts in the order that are added
+     * @param fragmentManager the fragment manager to be used for preforming the trasnactions
+     * @param fragments list of fragments to be added
+     */
     public void loadFragments(FragmentManager fragmentManager, Fragment... fragments) {
         if(menu != null && menu.size() > 0 && fragments.length > 0) {
             int n = Math.min(fragments.length, menu.size());
@@ -109,6 +140,10 @@ public class NsFragmentPager extends ViewPager implements BottomNavigationView.O
         requestLayout();
     }
 
+    /**
+     * Go to the next page in the pager
+     * @return the current page
+     */
     public int nextPage() {
         int currentItem = NsFragmentPager.this.getCurrentItem();
         if(currentItem < layoutPagerAdapter.getCount()-1) {
@@ -117,6 +152,10 @@ public class NsFragmentPager extends ViewPager implements BottomNavigationView.O
         return currentItem + 1;
     }
 
+    /**
+     * Go to the previous page in the pager
+     * @return the current page
+     */
     public int previousPage() {
         int currentItem = NsFragmentPager.this.getCurrentItem();
         if(currentItem > 0) {
@@ -124,6 +163,18 @@ public class NsFragmentPager extends ViewPager implements BottomNavigationView.O
         }
         return currentItem - 1;
     }
+
+    /**
+     * Set current page and navigation menu selected item
+     * @param item index of the selectable menu item
+     */
+    @Override
+    public void setCurrentItem(int item) {
+        super.setCurrentItem(item);
+        if(navigationView != null) {
+            navigationView.getMenu().getItem(item).setChecked(true);
+        }
+     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
