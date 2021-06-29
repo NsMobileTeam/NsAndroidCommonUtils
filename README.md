@@ -37,7 +37,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.4.8'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.4.9'
     ...
   }
 ```
@@ -416,6 +416,30 @@ public int nextPage();
 public int previousPage()
 //Set current page and navigation menu selected item
 public void setCurrentItem(int item)
+```
+
+Dialog class: **NsQuickDialog**:
+```xml
+<!-- OPTIONAL -->
+<Button
+  android:id="@+id/buttonOk"
+  ...
+  android:tag="actionOk"/>
+
+  <!-- WARNING -->
+  <!-- Must contain a clickable view with the tag set to "close" -->
+  <!--
+  Operating cases:
+  1. view is an instance of EditText it's contents are packed in a Pair<Tag, Text> and reported
+  2. tag is equal to "close" click on this view closes the dialogs
+  3. for every other case views are assigned an onClick listener and reported in case of a click
+-->
+```
+```java
+//Shows a quick dialog without a callback listener
+public static void show(Activity activity, @LayoutRes int dialogueLayout)
+//Shows a quick dialog with a callback listener
+public static void show(Activity activity, @LayoutRes int dialogueLayout, IUniversalListener<ArrayList<Pair<String, String>>> listener)
 ```
 
 ## License

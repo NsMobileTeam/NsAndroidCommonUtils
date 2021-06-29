@@ -25,7 +25,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.nextsense.nsutils.R;
 
 import java.lang.reflect.Field;
-import java.security.InvalidParameterException;
 
 @SuppressWarnings("unused")
 public class NsFragmentPager extends ViewPager implements BottomNavigationView.OnNavigationItemSelectedListener {
