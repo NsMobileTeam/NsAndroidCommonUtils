@@ -37,7 +37,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.4.7'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.4.8'
     ...
   }
 ```
@@ -393,12 +393,15 @@ void onFail(Exception e)
 
 View: **NsFragmentPager**:
 ```xml
+<!-- OPTIONAL -->
 <com.nextsense.nsutils.uiBaseElements.fragmentPager.NsFragmentPager
         android:id="@+id/lpMain"
         ...
         app:menuId="@menu/nav_menu"/>
 ```
 ```java
+//Initialize the pager layout and attach to navigation view
+public void init(BottomNavigationView navigationView, FragmentManager fragmentManager, Fragment... fragments)
 //Attach the Fragment pager to a bottom navigation view
 public void attachToNavigationView(BottomNavigationView navigationView)
 //Load the fragments in the page layouts in the order that are added

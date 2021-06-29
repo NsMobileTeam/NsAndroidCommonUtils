@@ -70,9 +70,7 @@ public class NsFragmentPager extends ViewPager implements BottomNavigationView.O
             menu = p.getMenu();
             ((Activity) getContext()).getMenuInflater().inflate(menuId, menu);
             setPagesForMenu(menu);
-        } catch (Exception e) {
-            throw new InvalidParameterException("No or invalid menuId set for the Pager");
-        }
+        } catch (Exception ignore) { }
     }
 
     /**
@@ -102,7 +100,7 @@ public class NsFragmentPager extends ViewPager implements BottomNavigationView.O
 
     /**
      * Load the fragments in the page layouts in the order that are added
-     * @param fragmentManager the fragment manager to be used for preforming the trasnactions
+     * @param fragmentManager the fragment manager to be used for preforming the transactions
      * @param fragments list of fragments to be added
      */
     public void loadFragments(FragmentManager fragmentManager, Fragment... fragments) {
@@ -115,6 +113,17 @@ public class NsFragmentPager extends ViewPager implements BottomNavigationView.O
 
             transaction.commit();
         }
+    }
+
+    /**
+     * Initialize the pager layout and attach to navigation view
+     * @param navigationView view pager will attach to this view
+     * @param fragmentManager the fragment manager to be used for preforming the transactions
+     * @param fragments list of fragments to be added
+     */
+    public void init(BottomNavigationView navigationView, FragmentManager fragmentManager, Fragment... fragments) {
+        attachToNavigationView(navigationView);
+        loadFragments(fragmentManager, fragments);
     }
 
     @Override
