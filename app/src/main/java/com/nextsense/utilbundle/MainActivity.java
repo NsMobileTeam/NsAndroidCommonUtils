@@ -22,7 +22,16 @@ public class MainActivity extends NsActivity<ActivityMainBinding> {
         binding.textView.setOnClickListener(view -> startActivity(SecondActivity.class, new TestModel("Kupa", 123), null));
         NsDate date = new NsDate();
         binding.time.setText(date.toString("YYYY.MM.dd' 'HH:mm:ss.SSS' '(XXX)"));
-        NsQuickDialog.show(this, R.layout.simple_name_dialog, result -> Log.d("",""));
+
+        ArrayList<Pair<String, String>> presets = new ArrayList<>();
+        presets.add(new Pair<>("username", "Boban"));
+        presets.add(new Pair<>("password", "P@ssw0rd"));
+        NsQuickDialog.show(this, R.layout.simple_name_dialog, presets, new IUniversalListener<ArrayList<Pair<String, String>>>() {
+            @Override
+            public void onSuccess(ArrayList<Pair<String, String>> result) {
+                Log.d("","");
+            }
+        });
     }
 
     @Override

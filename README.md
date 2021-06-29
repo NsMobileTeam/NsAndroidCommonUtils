@@ -37,7 +37,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.4.9'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:0.5.0'
     ...
   }
 ```
@@ -439,6 +439,8 @@ Dialog class: **NsQuickDialog**:
 public static void show(Activity activity, @LayoutRes int dialogueLayout)
 //Shows a quick dialog with a callback listener
 public static void show(Activity activity, @LayoutRes int dialogueLayout, IUniversalListener<ArrayList<Pair<String, String>>> listener)
+//Shows a quick dialog with a callback listener and an arrayList of Pair<Tag,Text> presets for tagged EditTexts
+public static void show(Activity activity, @LayoutRes int dialogueLayout, ArrayList<Pair<String, String>> presets, IUniversalListener<ArrayList<Pair<String, String>>> listener)
 ```
 
 ## License
