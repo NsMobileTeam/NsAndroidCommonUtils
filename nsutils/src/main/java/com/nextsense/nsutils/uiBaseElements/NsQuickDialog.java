@@ -11,6 +11,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.nextsense.nsutils.baseElements.NsDialogResult;
 import com.nextsense.nsutils.listeners.IUniversalListener;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 public class NsQuickDialog implements View.OnClickListener {
     private AlertDialog alertDialog;
     private final ArrayList<EditText> payloadInputs = new ArrayList<>();
-    private IUniversalListener<ArrayList<Pair<String, String>>> listener;
+    private IUniversalListener<NsDialogResult> listener;
     private ArrayList<Pair<String, String>> presets;
 
     /**
@@ -37,7 +38,7 @@ public class NsQuickDialog implements View.OnClickListener {
      * @param dialogueLayout the special dialog layout
      * @param listener callback listener for actions
      */
-    public static void show(Activity activity, @LayoutRes int dialogueLayout, @Nullable IUniversalListener<ArrayList<Pair<String, String>>> listener) {
+    public static void show(Activity activity, @LayoutRes int dialogueLayout, @Nullable IUniversalListener<NsDialogResult> listener) {
         new NsQuickDialog().showDialog(activity, dialogueLayout, null, listener);
     }
 
@@ -48,11 +49,11 @@ public class NsQuickDialog implements View.OnClickListener {
      * @param listener callback listener for actions
      * @param presets an arrayList of all presets for EditTexts
      */
-    public static void show(Activity activity, @LayoutRes int dialogueLayout, @Nullable ArrayList<Pair<String, String>> presets, @Nullable IUniversalListener<ArrayList<Pair<String, String>>> listener) {
+    public static void show(Activity activity, @LayoutRes int dialogueLayout, @Nullable ArrayList<Pair<String, String>> presets, @Nullable IUniversalListener<NsDialogResult> listener) {
         new NsQuickDialog().showDialog(activity, dialogueLayout, presets, listener);
     }
 
-    private void showDialog(Activity activity, @LayoutRes int dialogueLayout, @Nullable ArrayList<Pair<String, String>> presets, @Nullable IUniversalListener<ArrayList<Pair<String, String>>> listener) {
+    private void showDialog(Activity activity, @LayoutRes int dialogueLayout, @Nullable ArrayList<Pair<String, String>> presets, @Nullable IUniversalListener<NsDialogResult> listener) {
         this.listener = listener;
         this.presets = presets != null ? presets : new ArrayList<>();
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -97,11 +98,11 @@ public class NsQuickDialog implements View.OnClickListener {
         return "";
     }
 
-    private ArrayList<Pair<String, String>> preparePayloads(View view) {
-        ArrayList<Pair<String, String>> payloads = new ArrayList<>();
-        payloads.add(new Pair<>("result", (String) view.getTag()));
+    private NsDialogResult preparePayloads(View view) {
+        NsDialogResult payloads = new NsDialogResult();
+        payloads.put("result", (String) view.getTag());
         for (EditText editText : payloadInputs) {
-            payloads.add(new Pair<>((String) editText.getTag(), editText.getText().toString()));
+            payloads.put((String) editText.getTag(), editText.getText().toString());
         }
 
         return payloads;
