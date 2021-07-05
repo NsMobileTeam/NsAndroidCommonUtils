@@ -1,6 +1,8 @@
-package com.nextsense.utilbundle;
+package com.nextsense.utilbundle.Activities;
 
 import com.nextsense.nsutils.uiBaseElements.NsActivity;
+import com.nextsense.utilbundle.Fragments.MainFragment;
+import com.nextsense.utilbundle.Models.TestModel;
 import com.nextsense.utilbundle.databinding.ActivitySecondBinding;
 
 public class SecondActivity extends NsActivity<ActivitySecondBinding> {

@@ -1,4 +1,4 @@
-package com.nextsense.utilbundle;
+package com.nextsense.utilbundle.Models;
 
 import android.annotation.SuppressLint;
 

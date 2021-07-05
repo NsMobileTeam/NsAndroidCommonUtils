@@ -1,14 +1,15 @@
-package com.nextsense.utilbundle;
+package com.nextsense.utilbundle.Activities;
 
 import android.util.Log;
 import android.util.Pair;
 
 import com.nextsense.nsutils.baseElements.NsDate;
 import com.nextsense.nsutils.commons.ResourceFetch;
-import com.nextsense.nsutils.listeners.IUniversalListener;
 import com.nextsense.nsutils.locale.LocaleUtil;
 import com.nextsense.nsutils.uiBaseElements.NsActivity;
 import com.nextsense.nsutils.uiBaseElements.NsQuickDialog;
+import com.nextsense.utilbundle.Models.TestModel;
+import com.nextsense.utilbundle.R;
 import com.nextsense.utilbundle.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;

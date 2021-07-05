@@ -1,8 +1,9 @@
-package com.nextsense.utilbundle;
+package com.nextsense.utilbundle.Fragments;
 
 import android.view.LayoutInflater;
 
 import com.nextsense.nsutils.uiBaseElements.NsFragment;
+import com.nextsense.utilbundle.Models.TestModel;
 import com.nextsense.utilbundle.databinding.FragmentMainBinding;
 
 public class MainFragment extends NsFragment<FragmentMainBinding> {
