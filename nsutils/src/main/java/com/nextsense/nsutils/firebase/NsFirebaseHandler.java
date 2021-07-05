@@ -1,16 +1,15 @@
 package com.nextsense.nsutils.firebase;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -21,7 +20,7 @@ import com.nextsense.nsutils.storage.NsPrefs;
 import org.json.JSONObject;
 
 @SuppressWarnings("unused")
-public abstract class FirebaseMessageHandler<T extends NsNotification> extends FirebaseMessagingService {
+public abstract class NsFirebaseHandler<T extends NsNotification> extends FirebaseMessagingService {
     private static final String FIREBASE_PREFS = CommonUtils.getAppName() + "FirebasePrefs";
     private static final String FIREBASE_TOKEN_KEY = "FirebaseToken";
 
@@ -29,7 +28,7 @@ public abstract class FirebaseMessageHandler<T extends NsNotification> extends F
     private String channelId;
 
     public abstract void onNewToken();
-    public abstract void onMessageReceived(T notification);
+    public abstract void onMessageReceived(T notification, @Nullable RemoteMessage.Notification cloudNotification);
     public abstract Class<T> getNotificationClass();
     public abstract NotificationChannel getChannel();
 
@@ -45,11 +44,15 @@ public abstract class FirebaseMessageHandler<T extends NsNotification> extends F
     }
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
-        onMessageReceived(CommonUtils.fromJson(new JSONObject(remoteMessage.getData()).toString(), getNotificationClass()));
+    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
+        onMessageReceived(CommonUtils.fromJson(new JSONObject(remoteMessage.getData()).toString(), getNotificationClass()), remoteMessage.getNotification());
     }
 
-    public NotificationManager getNotificationManager() {
+    public void publish(@NonNull T notification) {
+        getNotificationManager().notify(notification.id(), getNotificationBuilder(notification).build());
+    }
+
+    private NotificationManager getNotificationManager() {
         if (notificationManager == null) {
             notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
