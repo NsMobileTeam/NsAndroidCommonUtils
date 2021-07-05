@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 
 import androidx.annotation.DrawableRes;
@@ -41,5 +42,14 @@ public abstract class NsNotification implements Serializable {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends NsNotification> T fromBundle(Intent intent) {
+        try {
+            return (T) intent.getExtras().get(BUNDLE_NOTIFICATION_KEY);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
