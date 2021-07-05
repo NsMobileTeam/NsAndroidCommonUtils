@@ -24,7 +24,7 @@ public abstract class NsNotification implements Serializable {
     public @Nullable abstract PendingIntent getPendingIntent(Context context);
     public @Nullable abstract RemoteViews getContentView(String packageName);
 
-    public PendingIntent createPendingIntent(Context context, Class<Activity> activityClass) {
+    public PendingIntent createPendingIntent(Context context, Class<? extends Activity> activityClass) {
         Intent intent = new Intent(context, activityClass);
         intent.putExtra(BUNDLE_NOTIFICATION_KEY,this);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
