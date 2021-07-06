@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.widget.RemoteViews;
 
 import androidx.annotation.DrawableRes;
@@ -18,6 +17,7 @@ import com.nextsense.nsutils.commons.Safe;
 
 import java.io.Serializable;
 
+@SuppressWarnings("unused")
 public abstract class NsNotification implements Serializable {
     public static final String BUNDLE_NOTIFICATION_KEY = "PushNotification";
 
@@ -28,17 +28,56 @@ public abstract class NsNotification implements Serializable {
         this.id = EncryptionUtil.secureRandomInstance().nextInt();
     }
 
+    /**
+     * Abstract method for retrieval of the notification's title
+     * @return title text
+     */
     public @NonNull abstract String title();
+
+    /**
+     * Abstract method for retrieval of the notification's message
+     * @return message text
+     */
     public @NonNull abstract String message();
+
+    /**
+     * Abstract method for retrieval of the notification's icon
+     * @return an icon resource id
+     */
     public @NonNull @DrawableRes abstract Integer icon();
+
+    /**
+     * Abstract method for retrieval of the notification's body icon
+     * @return a bitmap of the icon
+     */
     public @Nullable abstract Bitmap thumbnail();
+
+    /**
+     * Abstract method for retrieval of the notification's pending intent
+     * @return a pending intent
+     */
     public @Nullable abstract PendingIntent getPendingIntent(Context context);
+
+    /**
+     * Abstract method for retrieval of the notification custom view
+     * @return custom remote view
+     */
     public @Nullable abstract RemoteViews getContentView(String packageName);
 
+    /**
+     * Gets the randomised notification id
+     * @return random notification id
+     */
     public int id() {
         return id;
     }
 
+    /**
+     * Create a pending intent for this Notification
+     * @param context for the creation of the intent
+     * @param activityClass class of the launcher activity
+     * @return a fully constructend pending intent
+     */
     public PendingIntent getPendingIntent(Context context, Class<? extends Activity> activityClass) {
         Intent intent = new Intent(context, activityClass);
         intent.putExtra(BUNDLE_NOTIFICATION_KEY,this);
@@ -47,14 +86,27 @@ public abstract class NsNotification implements Serializable {
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
+    /**
+     * Set the remotely created notification
+     * @param remoteNotification the remote notification
+     */
     public void setRemoteNotification(RemoteMessage.Notification remoteNotification) {
         this.remoteNotification = remoteNotification;
     }
 
+    /**
+     * Gets the remotely created notification
+     */
     public RemoteMessage.Notification getRemoteNotification() {
         return remoteNotification;
     }
 
+    /**
+     * Create an NsNotification embedded within the extras in an intent
+     * @param intent any intent
+     * @param <T> type of the NsNotification
+     * @return an NsNotification of type T
+     */
     @SuppressWarnings("unchecked")
     public static <T extends NsNotification> T fromBundle(Intent intent) {
         try {
@@ -64,6 +116,11 @@ public abstract class NsNotification implements Serializable {
         }
     }
 
+    /**
+     * Creates a default NsNotification from a remotely crated notification
+     * @param remoteNotification the remote notification
+     * @return a basic NsNotification
+     */
     public static NsNotification getDefault(RemoteMessage.Notification remoteNotification) {
         NsNotification notification = new NsNotification() {
             @NonNull

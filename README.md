@@ -37,7 +37,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.0.0'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.0.1'
     ...
   }
 ```
@@ -267,6 +267,8 @@ Class: **Safe**:
 ```java
 //Null-safe string value of any object
 public static <T> String text(T value)
+//Null-safe string value of any object, returns fallbackValue if null
+public static <T> String text(T value, String fallbackValue)
 ```
 
 Class: **LocaleUtil**:
@@ -447,6 +449,73 @@ Dialog class: **NsQuickDialog**:
 ```java
 //Dialog response model
 public String get(String tagName, String defaultValue)
+```
+
+Helper class: **NsChannel**:
+```java
+//Constructor for creating an API safe NotificationChannel for Firebase messaging
+public NsChannel(String channelId, String channelName, int importance)
+```
+
+Abstract firebase service class: **NsFirebaseHandler&lt;T extends NsNotification&gt;**:
+```java
+//Abstract method called after a new token was issued and saved
+public abstract void onNewToken();
+//Abstract method called after a new message was received
+public abstract void onMessageReceived(@NonNull T notification);
+//Abstract method for retrieval of the class object of the T NsNotification
+public abstract @NonNull Class<T> getNotificationClass();
+//Abstract method for retrieval of the api safe NotificationChannel
+public abstract NsChannel getChannel();
+//Show notification of type NsNotification in the notification bar
+public void publish(T notification)
+//Get the currently available GMS token
+public static String getToken()
+//Cancel any NsNotificaiton
+public static <T extends NsNotification> void cancel(Context context, T notification)
+```
+
+Abstract class: **NsNotification**:
+```java
+//Abstract method for retrieval of the notification's title
+public abstract String title()
+//Abstract method for retrieval of the notification's message
+public abstract String message()
+//Abstract method for retrieval of the notification's icon
+public abstract Integer icon()
+//Abstract method for retrieval of the notification's body icon
+public abstract Bitmap thumbnail()
+//Abstract method for retrieval of the notification's pending intent
+public abstract PendingIntent getPendingIntent(Context context)
+//Abstract method for retrieval of the notification custom view
+public abstract RemoteViews getContentView(String packageName)
+//Gets the randomised notification id
+public int id()
+//Create a pending intent for this Notification
+public PendingIntent getPendingIntent(Context context, Class<? extends Activity> activityClass)
+//Set the remotely created notification
+public void setRemoteNotification(RemoteMessage.Notification remoteNotification)
+//Gets the remotely created notification
+public RemoteMessage.Notification getRemoteNotification()
+//Create an NsNotification embedded within the extras in an intent
+public static <T extends NsNotification> T fromBundle(Intent intent)
+//Creates a default NsNotification from a remotely crated notification
+public static NsNotification getDefault(RemoteMessage.Notification remoteNotification)
+```
+
+Logger class: **NsLog**:
+```java
+//Log an exception online and within the logcat
+public static void o(Exception e)
+//Log any type of content online and within the logcat
+public static void o(String tag, String content)
+//Log an exception within the logcat
+public static void l(Exception e)
+//Log any type of content online and within the logcat
+public static void l(String tag, String content)
+//Setup a handler for online logging
+public static void setOnlineLogger(ILogOnline onlineLogger)
+
 ```
 
 ## License

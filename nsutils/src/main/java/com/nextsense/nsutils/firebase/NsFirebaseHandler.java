@@ -25,11 +25,33 @@ public abstract class NsFirebaseHandler<T extends NsNotification> extends Fireba
     private NotificationManager notificationManager;
     private String channelId;
 
+    /**
+     * Abstract method called after a new token was issued and saved
+     */
     public abstract void onNewToken();
+
+    /**
+     * Abstract method called after a new message was received
+     * @param notification of type NsNotification
+     */
     public abstract void onMessageReceived(@NonNull T notification);
-    public abstract Class<T> getNotificationClass();
+
+    /**
+     * Abstract method for retrieval of the class object of the T NsNotification
+     * @return class object of the T NsNotification
+     */
+    public abstract @NonNull Class<T> getNotificationClass();
+
+    /**
+     * Abstract method for retrieval of the api safe NotificationChannel
+     * @return An api safe NotificationChannel
+     */
     public abstract NsChannel getChannel();
 
+    /**
+     * Get the currently available GMS token
+     * @return token
+     */
     public static String getToken() {
         return NsPrefs.get(FIREBASE_PREFS).getString(FIREBASE_TOKEN_KEY);
     }
@@ -54,6 +76,10 @@ public abstract class NsFirebaseHandler<T extends NsNotification> extends Fireba
         onMessageReceived(notification);
     }
 
+    /**
+     * Show notification of type NsNotification in the notification bar
+     * @param notification extending NsNotification
+     */
     public void publish(@NonNull T notification) {
         getNotificationManager().notify(notification.id(), getNotificationBuilder(notification).build());
     }
@@ -100,8 +126,21 @@ public abstract class NsFirebaseHandler<T extends NsNotification> extends Fireba
         return builder;
     }
 
-    public void cancel(T notification) {
+    /**
+     * Cancel any NsNotificaiton
+     * @param notification of type NsNotification
+     */
+    private void cancel(T notification) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(notification.id());
+    }
+
+    /**
+     * Cancel any NsNotificaiton
+     * @param notification of type NsNotification
+     */
+    public static <T extends NsNotification> void cancel(Context context, T notification) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(notification.id());
     }
 }

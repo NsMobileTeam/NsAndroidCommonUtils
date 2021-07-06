@@ -17,7 +17,7 @@ public class Safe {
     }
 
     /**
-     * Null-safe string value of any object returns default object if null
+     * Null-safe string value of any object, returns fallbackValue if null
      * @param value any object
      * @param fallbackValue default value if failed to get string from the object
      * @param <T> class of object
