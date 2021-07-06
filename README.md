@@ -13,6 +13,12 @@ buildscript {
       ...
       maven { url 'https://jitpack.io' }
     }
+
+    dependencies {//OPTIONAL for firebase messaging:
+      ...
+      classpath 'com.google.gms:google-services:4.3.8'
+      classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
+    }
   }
 
 allprojects {
@@ -38,8 +44,17 @@ In build.gradle **(Module)**:
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.0.1'
+
+    //OPTIONAL for firebase messaging:
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
+    implementation 'com.google.firebase:firebase-analytics:19.0.0'
+    implementation 'com.google.firebase:firebase-core:19.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.1.0'
     ...
   }
+
+//OPTIONAL for firebase messaging:
+apply plugin: 'com.google.firebase.crashlytics'
 ```
 
 **IMPORTANT** next steps:
