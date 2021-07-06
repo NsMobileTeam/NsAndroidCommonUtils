@@ -1,7 +1,6 @@
 package com.nextsense.nsutils.firebase;
 
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.os.Build;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -28,9 +26,9 @@ public abstract class NsFirebaseHandler<T extends NsNotification> extends Fireba
     private String channelId;
 
     public abstract void onNewToken();
-    public abstract void onMessageReceived(T notification, @Nullable RemoteMessage.Notification cloudNotification);
+    public abstract void onMessageReceived(T notification);
     public abstract Class<T> getNotificationClass();
-    public abstract NotificationChannel getChannel();
+    public abstract NsChannel getChannel();
 
     public static String getToken() {
         return NsPrefs.get(FIREBASE_PREFS).getString(FIREBASE_TOKEN_KEY);
@@ -43,9 +41,17 @@ public abstract class NsFirebaseHandler<T extends NsNotification> extends Fireba
         onNewToken();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
-        onMessageReceived(CommonUtils.fromJson(new JSONObject(remoteMessage.getData()).toString(), getNotificationClass()), remoteMessage.getNotification());
+        T notification = CommonUtils.fromJson(new JSONObject(remoteMessage.getData()).toString(), getNotificationClass());
+        if(notification == null) {
+            notification = (T) new NsBasicNotificaiton(remoteMessage.getNotification());
+        } else {
+            notification.setRemoteNotification(remoteMessage.getNotification());
+        }
+
+        onMessageReceived(notification);
     }
 
     public void publish(@NonNull T notification) {
@@ -57,8 +63,8 @@ public abstract class NsFirebaseHandler<T extends NsNotification> extends Fireba
             notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                notificationManager.createNotificationChannel(getChannel());
-                channelId = getChannel().getId();
+                notificationManager.createNotificationChannel(getChannel().getNotificationChannel());
+                channelId = getChannel().getNotificationChannel().getId();
             } else {
                 channelId = "DEFAULT";
             }
@@ -72,13 +78,10 @@ public abstract class NsFirebaseHandler<T extends NsNotification> extends Fireba
         builder.setChannelId(channelId);
         builder.setContentTitle(notification.title());
         builder.setContentText(notification.message());
+        builder.setSmallIcon(notification.icon());
         builder.setWhen(System.currentTimeMillis());
         builder.setPriority(Notification.PRIORITY_MAX);
         builder.setAutoCancel(true);
-
-        if(notification.icon() != null) {
-            builder.setSmallIcon(notification.icon());
-        }
 
         if(notification.thumbnail() != null) {
             builder.setLargeIcon(notification.thumbnail());

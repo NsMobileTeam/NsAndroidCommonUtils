@@ -12,6 +12,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.messaging.RemoteMessage;
 import com.nextsense.nsutils.commons.EncryptionUtil;
 
 import java.io.Serializable;
@@ -20,6 +21,7 @@ public abstract class NsNotification implements Serializable {
     public static final String BUNDLE_NOTIFICATION_KEY = "PushNotification";
 
     private final int id;
+    private RemoteMessage.Notification remoteNotification;
 
     public NsNotification() {
         this.id = EncryptionUtil.secureRandomInstance().nextInt();
@@ -27,7 +29,7 @@ public abstract class NsNotification implements Serializable {
 
     public @NonNull abstract String title();
     public @NonNull abstract String message();
-    public @Nullable @DrawableRes abstract Integer icon();
+    public @NonNull @DrawableRes abstract Integer icon();
     public @Nullable abstract Bitmap thumbnail();
     public @Nullable abstract PendingIntent getPendingIntent(Context context);
     public @Nullable abstract RemoteViews getContentView(String packageName);
@@ -44,8 +46,16 @@ public abstract class NsNotification implements Serializable {
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
+    public void setRemoteNotification(RemoteMessage.Notification remoteNotification) {
+        this.remoteNotification = remoteNotification;
+    }
+
+    public RemoteMessage.Notification getRemoteNotification() {
+        return remoteNotification;
+    }
+
     @SuppressWarnings("unchecked")
-    public <T extends NsNotification> T fromBundle(Intent intent) {
+    public static <T extends NsNotification> T fromBundle(Intent intent) {
         try {
             return (T) intent.getExtras().get(BUNDLE_NOTIFICATION_KEY);
         } catch (Exception e) {
