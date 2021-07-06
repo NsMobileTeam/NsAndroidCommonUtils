@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.google.firebase.messaging.RemoteMessage;
 import com.nextsense.nsutils.commons.EncryptionUtil;
+import com.nextsense.nsutils.commons.Safe;
 
 import java.io.Serializable;
 
@@ -61,5 +62,48 @@ public abstract class NsNotification implements Serializable {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public static NsNotification getDefault(RemoteMessage.Notification remoteNotification) {
+        NsNotification notification = new NsNotification() {
+            @NonNull
+            @Override
+            public String title() {
+                return Safe.text(getRemoteNotification().getTitle());
+            }
+
+            @NonNull
+            @Override
+            public String message() {
+                return Safe.text(getRemoteNotification().getBody());
+            }
+
+            @NonNull
+            @Override
+            public Integer icon() {
+                return android.R.drawable.sym_def_app_icon;
+            }
+
+            @Nullable
+            @Override
+            public Bitmap thumbnail() {
+                return null;
+            }
+
+            @Nullable
+            @Override
+            public PendingIntent getPendingIntent(Context context) {
+                return null;
+            }
+
+            @Nullable
+            @Override
+            public RemoteViews getContentView(String packageName) {
+                return null;
+            }
+        };
+
+        notification.setRemoteNotification(remoteNotification);
+        return notification;
     }
 }

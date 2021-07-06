@@ -26,7 +26,7 @@ public abstract class NsFirebaseHandler<T extends NsNotification> extends Fireba
     private String channelId;
 
     public abstract void onNewToken();
-    public abstract void onMessageReceived(T notification);
+    public abstract void onMessageReceived(@NonNull T notification);
     public abstract Class<T> getNotificationClass();
     public abstract NsChannel getChannel();
 
@@ -45,10 +45,10 @@ public abstract class NsFirebaseHandler<T extends NsNotification> extends Fireba
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         T notification = CommonUtils.fromJson(new JSONObject(remoteMessage.getData()).toString(), getNotificationClass());
-        if(notification == null) {
-            notification = (T) new NsBasicNotificaiton(remoteMessage.getNotification());
-        } else {
+        if(notification != null) {
             notification.setRemoteNotification(remoteMessage.getNotification());
+        } else {
+            notification = (T) NsNotification.getDefault(remoteMessage.getNotification());
         }
 
         onMessageReceived(notification);
