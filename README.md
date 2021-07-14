@@ -43,7 +43,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.1.0'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.1.1'
 
     //OPTIONAL for firebase messaging:
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
@@ -115,8 +115,8 @@ public static <T> T fromJson(String json, Class<T> classObject)
 public static <T> ArrayList<T> fromJsonArray(String jsonArray, Class<T> itemClass)
 //Get application name
 public static String getAppName()
-
 ```
+
 Class: **ResourceFetch**:
 ```java
 //Get string from its resource id
@@ -136,6 +136,7 @@ public static Configuration getConfiguration()
 //Get a System Service by the class object of the desired system service
 public static <T> T getSystemService(Class<T> serviceClass)
 ```
+
 Class: **NsDate** (an extension of the Android Date class):
 ```java
 ////Constructors:
@@ -244,6 +245,8 @@ public NsPrefs(String name)
 ////Methods:
 //Save a boolean value for a String key in the sharedPreferences
 public void saveBoolean(String key, boolean bool)
+//Save byte data for a String key in the sharedPreferences
+public void saveBytes(String key, byte[] data)
 //Save an int value for a String key in the sharedPreferences
 public void saveInt(String key, int n)
 //Save a long value for a String key in the sharedPreferences
@@ -254,6 +257,8 @@ public void saveString(String key, String text)
 public void saveObject(String key, Object object)
 //Get a boolean value from its sharedPreference key
 public boolean getBoolean(String key, boolean defValue)
+//Get byte data from its sharedPreference key
+public byte[] getBytes(String key)
 //Get an Integer object from the sharedPreferences by its key
 public Integer getInt(String key)
 //Get a Long object from the sharedPreferences by its key
@@ -354,6 +359,8 @@ public void requestPermissions(IUniversalListener<Map<String, Boolean>> permissi
 public boolean arePermissionsGranted(Map<String, Boolean> permissionResult)
 //Determine whether all the listed permissions are granted
 public boolean arePermissionsGranted(String... permissions)
+//Launch a universal ActivityResultLauncher bound by a modifiable contract
+public void startLauncher(Object input, NsActivityContract.IContractInterface<Object,Object> listener)
 //Starts another NsActivity with no flags or extras
 public void startActivity(Class<? extends NsActivity> activity)
 //Starts another NsActivity with an extra object passed as an argument with no flags
@@ -530,7 +537,22 @@ public static void l(Exception e)
 public static void l(String tag, String content)
 //Setup a handler for online logging
 public static void setOnlineLogger(ILogOnline onlineLogger)
+```
 
+Sacure storage class (requires Android 6, API 23): **NsVault**:
+```java
+//Get the system's keyguard service
+public static KeyguardManager keyguard()
+//Encrypt and save serializable data with the system's Secure Element requiring user authentication
+public static <T> void authSave(String key, T plainData, IVaultListener<Boolean> listener)
+//Decrypt saved encrypted data after user authentication
+public static <T> void authLoad(String key, Class<T> classOfObject, IVaultListener<T> listener)
+//Encrypt and save serializable data with the system's Secure Element
+public static <T> void save(String key, T plainData)
+//Decrypt saved encrypted data
+public static <T> T load(String key, Class<T> classOfObject)
+//Delete saved data entry
+public static void delete(String key)
 ```
 
 ## License

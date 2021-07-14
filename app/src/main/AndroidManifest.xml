@@ -13,24 +13,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UtilBundle">
-        <activity android:name=".Activities.SecondActivity"></activity>
+        <activity android:name=".Activities.LoginActivity"/>
+        <activity android:name=".Activities.SecondActivity" />
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            </activity>
+        </activity>
 
-            <provider
-                android:name="androidx.core.content.FileProvider"
-                android:authorities="@string/fileProviderName"
-                android:exported="false"
-                android:grantUriPermissions="true">
-                <meta-data
-                    android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/file_provider_paths" />
-            </provider>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="@string/fileProviderName"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+        </provider>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package com.nextsense.nsutils.commons;
 
 import android.os.Build;
+import android.util.Base64;
 
 import androidx.annotation.Nullable;
 
@@ -32,14 +33,15 @@ public class EncryptionUtil {
      * Gets an overly complicated secure random generator
      * @return secure instance of SecureRandom
      */
-    public static SecureRandom secureRandomInstance() {
-        if(secureRandom == null) {
+    public static SecureRandom secureRandomInstance(boolean reinst, boolean prng, boolean weak) {
+        if(reinst || secureRandom == null) {
             byte[] secureSeed;
             try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (!prng && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     secureSeed = SecureRandom.getInstanceStrong().generateSeed(128);
                     secureRandom = SecureRandom.getInstanceStrong();
                 } else {
+                    if(weak) throw new NoSuchAlgorithmException();
                     secureSeed = SecureRandom.getInstance("SHA1PRNG").generateSeed(128);
                     secureRandom = SecureRandom.getInstance("SHA1PRNG");
                 }
@@ -47,6 +49,8 @@ public class EncryptionUtil {
                 secureSeed = new SecureRandom().generateSeed(128);
                 secureRandom = new SecureRandom();
             }
+
+            NsLog.l("SEED", Base64.encodeToString(secureSeed, Base64.DEFAULT));
 
             secureRandom.setSeed(secureSeed);
             byte[] randomByte = new byte[1];
@@ -67,7 +71,7 @@ public class EncryptionUtil {
      */
     public static byte[] secureRandom(int byteNum) {
         byte[] random = new byte[byteNum];
-        secureRandomInstance().nextBytes(random);
+        secureRandomInstance(true, true, true).nextBytes(random);
         return random;
     }
 
@@ -179,7 +183,7 @@ public class EncryptionUtil {
      */
     public static IvParameterSpec randomIv(int ivSize) {
         final byte[] iv = new byte[ivSize];
-        secureRandomInstance().nextBytes(iv);
+        secureRandomInstance(false, false,false).nextBytes(iv);
         return new IvParameterSpec(iv);
     }
 

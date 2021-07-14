@@ -25,7 +25,7 @@ public abstract class NsNotification implements Serializable {
     private RemoteMessage.Notification remoteNotification;
 
     public NsNotification() {
-        this.id = EncryptionUtil.secureRandomInstance().nextInt();
+        this.id = EncryptionUtil.secureRandomInstance(false, false,false).nextInt();
     }
 
     /**

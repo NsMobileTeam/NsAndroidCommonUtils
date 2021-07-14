@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="dummy_char">/</string>
+    <string name="vault_authorize">Authorize</string>
+    <string name="vault_auth_description">Authorize the app to use the safe storage.</string>
 </resources>

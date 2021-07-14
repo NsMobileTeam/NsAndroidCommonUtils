@@ -2,6 +2,7 @@ package com.nextsense.nsutils.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
 
 import com.nextsense.nsutils.UtilBase;
 import com.nextsense.nsutils.commons.CommonUtils;
@@ -48,6 +49,17 @@ public class NsPrefs {
         editor.apply();
     }
 
+    /**
+     * Save byte data for a String key in the sharedPreferences
+     * @param key Value of the entry key
+     * @param data Value of the byte data
+     */
+    public void saveBytes(String key, byte[] data) {
+        String base64 = Base64.encodeToString(data, Base64.DEFAULT);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(key, base64);
+        editor.apply();
+    }
 
     /**
      * Save an int value for a String key in the sharedPreferences
@@ -115,6 +127,17 @@ public class NsPrefs {
             return preferences.getBoolean(key, defValue);
         }
         return defValue;
+    }
+
+    /**
+     * Get byte data from its sharedPreference key
+     * @param key Value of the entry key
+     */
+    public byte[] getBytes(String key) {
+        if (preferences.contains(key)) {
+            return Base64.decode(getString(key), Base64.DEFAULT);
+        }
+        return new byte[0];
     }
 
     /**

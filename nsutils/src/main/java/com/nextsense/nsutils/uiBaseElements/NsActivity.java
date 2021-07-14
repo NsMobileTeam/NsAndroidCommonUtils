@@ -17,6 +17,7 @@ import androidx.viewbinding.ViewBinding;
 
 import com.nextsense.nsutils.UtilBase;
 import com.nextsense.nsutils.commons.CommonUtils;
+import com.nextsense.nsutils.commons.NsActivityContract;
 import com.nextsense.nsutils.listeners.IUniversalListener;
 import com.nextsense.nsutils.locale.LocaleUtil;
 
@@ -29,7 +30,11 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
 
     private ActivityResultLauncher<String[]> permissionLauncher;
     private IUniversalListener<Map<String, Boolean>> permissionListener;
+    private ActivityResultLauncher<Object> resultLauncher;
+    private NsActivityContract<Object, Object> resultContract;
     protected T binding;
+
+    private Intent defaultIntent;
 
     @Override
     protected final void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +47,8 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
         binding = getBinding();
         setContentView(binding.getRoot());
         permissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), this::reportPermissionStatus);
+        resultContract = new NsActivityContract<>();
+        resultLauncher = registerForActivityResult(resultContract, resultContract);
         onCreate();
     }
 
@@ -151,6 +158,16 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
         }
 
         startActivity(intent);
+    }
+
+    /**
+     * Launch a universal ActivityResultLauncher bound by a modifiable contract
+     * @param input object for the contract of the launcher
+     * @param listener for handling the contract's requirements
+     */
+    public void startLauncher(Object input, @NonNull NsActivityContract.IContractInterface<Object,Object> listener) {
+        resultContract.setListener(listener);
+        resultLauncher.launch(input);
     }
 
     /**
