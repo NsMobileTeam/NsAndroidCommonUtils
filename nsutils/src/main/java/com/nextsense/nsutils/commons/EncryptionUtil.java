@@ -1,15 +1,21 @@
 package com.nextsense.nsutils.commons;
 
+import android.content.pm.PackageManager;
 import android.os.Build;
-import android.util.Base64;
+import android.security.KeyPairGeneratorSpec;
+import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyProperties;
 
 import androidx.annotation.Nullable;
+
+import com.nextsense.nsutils.UtilBase;
 
 import java.lang.reflect.UndeclaredThrowableException;
 import java.math.BigInteger;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -30,34 +36,17 @@ public class EncryptionUtil {
     private static SecureRandom secureRandom;
 
     /**
-     * Gets an overly complicated secure random generator
+     * Get a secure random generator
      * @return secure instance of SecureRandom
      */
-    public static SecureRandom secureRandomInstance(boolean reinst, boolean prng, boolean weak) {
-        if(reinst || secureRandom == null) {
-            byte[] secureSeed;
+    public static SecureRandom secureRandomInstance() {
+        if (secureRandom == null) {
             try {
-                if (!prng && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    secureSeed = SecureRandom.getInstanceStrong().generateSeed(128);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     secureRandom = SecureRandom.getInstanceStrong();
-                } else {
-                    if(weak) throw new NoSuchAlgorithmException();
-                    secureSeed = SecureRandom.getInstance("SHA1PRNG").generateSeed(128);
-                    secureRandom = SecureRandom.getInstance("SHA1PRNG");
-                }
-            } catch (NoSuchAlgorithmException e) {
-                secureSeed = new SecureRandom().generateSeed(128);
+                } else throw new Exception();
+            } catch (Exception e){
                 secureRandom = new SecureRandom();
-            }
-
-            NsLog.l("SEED", Base64.encodeToString(secureSeed, Base64.DEFAULT));
-
-            secureRandom.setSeed(secureSeed);
-            byte[] randomByte = new byte[1];
-            secureRandom.nextBytes(randomByte);
-            byte emptyRun = (byte) Math.abs(secureSeed[Math.abs(randomByte[0])]);
-            for (int i = 0; i < emptyRun; i++) {
-                secureRandom.nextBytes(new byte[Math.abs(secureSeed[i])]);
             }
         }
 
@@ -71,7 +60,7 @@ public class EncryptionUtil {
      */
     public static byte[] secureRandom(int byteNum) {
         byte[] random = new byte[byteNum];
-        secureRandomInstance(true, true, true).nextBytes(random);
+        secureRandomInstance().nextBytes(random);
         return random;
     }
 
@@ -110,7 +99,7 @@ public class EncryptionUtil {
     /**
      * Asymmetric decryption of any data
      * @param privateKey private key for decryption
-     * @param algorithm string name of the encryption algorithm ex. "RSA/ECB/PKCS1PADDING"
+     * @param algorithm  string name of the encryption algorithm ex. "RSA/ECB/PKCS1PADDING"
      * @param cipherText byte data for asymmetric encryption
      * @return decrypted data
      * @throws Exception if decryption fails
@@ -123,6 +112,7 @@ public class EncryptionUtil {
 
     /**
      * Generate an Private/Public key pair
+     *
      * @param algorithm key pair algorithm ex. "RSA"
      * @param keySize adequate key size
      * @return generated KeyPair
@@ -183,7 +173,7 @@ public class EncryptionUtil {
      */
     public static IvParameterSpec randomIv(int ivSize) {
         final byte[] iv = new byte[ivSize];
-        secureRandomInstance(false, false,false).nextBytes(iv);
+        secureRandomInstance().nextBytes(iv);
         return new IvParameterSpec(iv);
     }
 
@@ -198,7 +188,7 @@ public class EncryptionUtil {
      */
     public static byte[] encrypt(String algorithm, SecretKey secretKey, IvParameterSpec cbcIv, byte[] plaintext) throws Exception {
         Cipher cipher = Cipher.getInstance(algorithm);
-        if(algorithm.contains("CBC")) {
+        if (algorithm.contains("CBC")) {
             cbcIv = cbcIv == null ? new IvParameterSpec(new byte[16]) : cbcIv;
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, cbcIv);
         } else {
@@ -219,7 +209,7 @@ public class EncryptionUtil {
      */
     public static byte[] decrypt(String algorithm, SecretKey secretKey, IvParameterSpec cbcIv, byte[] ciphertext) throws Exception {
         Cipher cipher = Cipher.getInstance(algorithm);
-        if(algorithm.contains("CBC")) {
+        if (algorithm.contains("CBC")) {
             cbcIv = cbcIv == null ? new IvParameterSpec(new byte[16]) : cbcIv;
             cipher.init(Cipher.DECRYPT_MODE, secretKey, cbcIv);
         } else {
@@ -227,6 +217,18 @@ public class EncryptionUtil {
         }
 
         return cipher.doFinal(ciphertext);
+    }
+
+    /**
+     * Check if device has hardware encryption module
+     * @return true if device has secure module
+     */
+    public static boolean hasStrongBox() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            return UtilBase.getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_STRONGBOX_KEYSTORE);
+        }
+
+        return false;
     }
 
     /**
@@ -306,6 +308,71 @@ public class EncryptionUtil {
             byte[] ret = new byte[bArray.length - 1];
             System.arraycopy(bArray, 1, ret, 0, ret.length);
             return ret;
+        }
+    }
+
+    public static class Store {
+        public static final String MAIN_KEYSTORE = "AndroidKeyStore";
+        public static final int AUTH_VALIDITY_DURATION = 5;//seconds
+
+        /**
+         * Get the default android keystore "AndroidKeyStore"
+         * @return instance of AndroidKeyStore
+         * @throws Exception when key store fails to load
+         */
+        public static KeyStore getMainKeystore() throws Exception {
+            KeyStore keyStore = KeyStore.getInstance(MAIN_KEYSTORE);
+            keyStore.load(null);
+            return keyStore;
+        }
+
+        /**
+         * Get or Generate a key pair within the main keystore
+         * @param alias name of the key
+         * @param keyType key algorithm
+         * @param sizeBits size of the key in bits
+         * @param userAuthenticated authentication required prior to using the key
+         * @return the key pair
+         * @throws Exception if key generation/retrieval fails
+         */
+        public static KeyPair getKeyPair(String alias, String keyType, int sizeBits, boolean userAuthenticated) throws Exception {
+            KeyStore keyStore = getMainKeystore();
+            if (!keyStore.containsAlias(alias)) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    KeyPairGenerator kpg = KeyPairGenerator.getInstance(keyType, MAIN_KEYSTORE);
+                    KeyGenParameterSpec.Builder keyBuilder = new KeyGenParameterSpec.Builder(alias, KeyProperties.PURPOSE_SIGN | KeyProperties.PURPOSE_VERIFY | KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT);
+                    keyBuilder.setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512);
+                    keyBuilder.setKeySize(sizeBits);
+                    keyBuilder.setRandomizedEncryptionRequired(false);
+                    keyBuilder.setUserAuthenticationValidityDurationSeconds(AUTH_VALIDITY_DURATION);
+                    keyBuilder.setUserAuthenticationRequired(userAuthenticated);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        keyBuilder.setUserPresenceRequired(userAuthenticated);
+                    }
+
+                    kpg.initialize(keyBuilder.build());
+                    return kpg.generateKeyPair();
+                } else {
+                    KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(UtilBase.getContext())
+                            .setAlias(alias)
+                            .setKeyType(keyType)
+                            .setKeySize(sizeBits)
+                            .setSerialNumber(BigInteger.ONE)
+                            .build();
+
+                    KeyPairGenerator generator = KeyPairGenerator.getInstance(keyType, MAIN_KEYSTORE);
+                    generator.initialize(spec);
+                    return generator.generateKeyPair();
+                }
+            }
+
+            return getExistingKeyPair(alias);
+        }
+
+
+        private static KeyPair getExistingKeyPair(String alias) throws Exception {
+            KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) getMainKeystore().getEntry(alias, null);
+            return new KeyPair(privateKeyEntry.getCertificate().getPublicKey(), privateKeyEntry.getPrivateKey());
         }
     }
 }

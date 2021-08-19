@@ -8,9 +8,11 @@ import androidx.activity.result.contract.ActivityResultContract;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.nextsense.nsutils.storage.NsPrefs;
+
 @SuppressWarnings("unused")
 public class NsActivityContract<I,O> extends ActivityResultContract<I, O> implements ActivityResultCallback<O> {
-    private IContractInterface<I,O> listener;
+    private NsPrefs.IContractInterface<I,O> listener;
 
     @NonNull
     @Override
@@ -39,13 +41,7 @@ public class NsActivityContract<I,O> extends ActivityResultContract<I, O> implem
         listener = null;
     }
 
-    public void setListener(IContractInterface<I, O> listener) {
+    public void setListener(NsPrefs.IContractInterface<I, O> listener) {
         this.listener = listener;
-    }
-
-    public interface IContractInterface<I,O> {
-        Intent createIntent(@NonNull Context context, I input);
-        O parseResult(int resultCode, @Nullable Intent intent);
-        void onContractResult(O result);
     }
 }

@@ -20,6 +20,7 @@ import com.nextsense.nsutils.commons.CommonUtils;
 import com.nextsense.nsutils.commons.NsActivityContract;
 import com.nextsense.nsutils.listeners.IUniversalListener;
 import com.nextsense.nsutils.locale.LocaleUtil;
+import com.nextsense.nsutils.storage.NsPrefs;
 
 import java.util.Map;
 
@@ -165,7 +166,7 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
      * @param input object for the contract of the launcher
      * @param listener for handling the contract's requirements
      */
-    public void startLauncher(Object input, @NonNull NsActivityContract.IContractInterface<Object,Object> listener) {
+    public void startLauncher(Object input, @NonNull NsPrefs.IContractInterface<Object,Object> listener) {
         resultContract.setListener(listener);
         resultLauncher.launch(input);
     }

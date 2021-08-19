@@ -17,7 +17,6 @@ public class MainActivity extends NsActivity<ActivityMainBinding> {
         binding.textView.setOnClickListener(view -> startActivity(SecondActivity.class, new TestModel("Kupa", 123), null));
         NsDate date = new NsDate();
         binding.time.setText(date.toString("YYYY.MM.dd' 'HH:mm:ss.SSS' '(XXX)"));
-        binding.btnLogin.setOnClickListener(view -> startActivity(LoginActivity.class));
     }
 
     @Override

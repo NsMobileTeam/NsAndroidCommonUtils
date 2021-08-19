@@ -1,41 +1,150 @@
 package com.nextsense.nsutils.storage;
 
+import android.app.Activity;
+import android.app.KeyguardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.security.keystore.UserNotAuthenticatedException;
 import android.util.Base64;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
+
+import com.nextsense.nsutils.R;
 import com.nextsense.nsutils.UtilBase;
 import com.nextsense.nsutils.commons.CommonUtils;
+import com.nextsense.nsutils.commons.EncryptionUtil;
+import com.nextsense.nsutils.commons.ResourceFetch;
 
 import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 public class NsPrefs {
+    private static final String PREFIX_PREFERENCES = "%sPrefs";
+    private static final String PREFIX_LOCKED_PREFERENCES = "%sLockPrefs";
+    private static final String PREFIX_SECURE_PREFERENCES = "%sSecPrefs";
+    private static final String PREFIX_MASTER_KEY = "%sMasterKey";
+
     private final SharedPreferences preferences;
 
-    /**
-     * Get or create a new sharedPreference bundle by Name
-     * @param name of the sharedPreference
-     */
-    public NsPrefs(String name) {
-        preferences = UtilBase.getContext().getSharedPreferences(name, Context.MODE_PRIVATE);
+    private NsPrefs(SharedPreferences preferences) {
+        this.preferences = preferences;
+    }
+
+    private NsPrefs(String name) {
+        this.preferences = UtilBase.getContext().getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
     /**
      * Get default app shared preference
-     * @return the default preference
+     * @return a default preference
      */
     public static NsPrefs get() {
-        return get(String.format("%sPrefs", CommonUtils.getAppName()));
+        return get(String.format(PREFIX_PREFERENCES, CommonUtils.getAppName()));
     }
 
     /**
-     * Get or create a new sharedPreference bundle by Name
-     * @param name of the sharedPreference
+     * Get or create a new sharedPreferences bundle by Name
+     * @param name of the sharedPreferences
      * @return a preference by the name from the parameters
      */
     public static NsPrefs get(String name) {
         return new NsPrefs(name);
+    }
+
+    /**
+     * Get or create a new EncryptedSharedPreferences bundle by Name locked by device locking mechanism
+     * @param listener user authentication listener
+     */
+    public static void getLocked(IUserAuthListener listener) {
+        getLocked(String.format(PREFIX_LOCKED_PREFERENCES, CommonUtils.getAppName()), listener);
+    }
+
+    /**
+     * Get or create a new EncryptedSharedPreferences bundle by Name locked by device locking mechanism
+     * @param name of the shared preference and name
+     * @param listener user authentication listener
+     */
+    public static void getLocked(String name, IUserAuthListener listener) {
+        try {
+            String masterKeyAlias = String.format(PREFIX_MASTER_KEY, name);
+            MasterKey.Builder builder = new MasterKey.Builder(UtilBase.getContext(), masterKeyAlias);
+            builder.setKeyScheme(MasterKey.KeyScheme.AES256_GCM);
+            builder.setUserAuthenticationRequired(true, 5);
+            if (EncryptionUtil.hasStrongBox()) {
+                builder.setRequestStrongBoxBacked(true);
+            }
+            SharedPreferences ePrefs = EncryptedSharedPreferences.create(
+                    UtilBase.getContext(),
+                    name,
+                    builder.build(),
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+
+            listener.onSecureInstance(new NsPrefs(ePrefs));
+        } catch (Exception e) {
+            if (isUserAuthException(e)) {
+                listener.authenticate(new IContractInterface<Object, Object>() {
+                    @Override
+                    public Intent createIntent(@NonNull Context context, Object input) {
+                        return keyguard().createConfirmDeviceCredentialIntent(ResourceFetch.getString(R.string.vault_authorize), ResourceFetch.getString(R.string.vault_auth_description));
+                    }
+
+                    @Override
+                    public Object parseResult(int resultCode, @Nullable Intent intent) {
+                        return resultCode == Activity.RESULT_OK;
+                    }
+
+                    @Override
+                    public void onContractResult(Object result) {
+                        try {
+                            getLocked(name, listener);
+                        } catch (Exception e) {
+                            listener.onSecureInstance(null);
+                        }
+                    }
+                });
+            } else {
+                listener.onSecureInstance(null);
+            }
+        }
+    }
+
+    /**
+     * Get or create a new EncryptedSharedPreferences bundle by Name
+     * @return encrypted shared preference
+     */
+    public static NsPrefs getSecure() {
+        return getSecure(String.format(PREFIX_SECURE_PREFERENCES, CommonUtils.getAppName()));
+    }
+
+    /**
+     * Get or create a new EncryptedSharedPreferences bundle by Name
+     * @param name of the shared preference and name
+     * @return encrypted shared preference
+     */
+    public static NsPrefs getSecure(String name) {
+        try {
+            String masterKeyAlias = String.format(PREFIX_MASTER_KEY, name);
+            MasterKey.Builder builder = new MasterKey.Builder(UtilBase.getContext(), masterKeyAlias);
+            builder.setKeyScheme(MasterKey.KeyScheme.AES256_GCM);
+            SharedPreferences ePrefs = EncryptedSharedPreferences.create(
+                    UtilBase.getContext(),
+                    name,
+                    builder.build(),
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+
+            return new NsPrefs(ePrefs);
+        } catch (Exception e) {
+            return new NsPrefs(name);
+        }
     }
 
     /**
@@ -206,6 +315,30 @@ public class NsPrefs {
             editor.remove(key);
         }
         editor.apply();
+    }
+
+    /**
+     * Get the keyguard system service
+     * @return keyguard service
+     */
+    public static KeyguardManager keyguard() {
+        return ((KeyguardManager)UtilBase.getContext().getSystemService(Context.KEYGUARD_SERVICE));
+    }
+
+    private static boolean isUserAuthException(Exception e) {
+        return (CommonUtils.minApiLevel(Build.VERSION_CODES.M) && e instanceof UserNotAuthenticatedException) ||
+                (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("not authenticated"));
+    }
+
+    public interface IUserAuthListener {
+        void authenticate(IContractInterface<Object, Object> listener);
+        void onSecureInstance(@Nullable NsPrefs secPrefs);
+    }
+
+    public interface IContractInterface<I,O> {
+        Intent createIntent(@NonNull Context context, I input);
+        O parseResult(int resultCode, @Nullable Intent intent);
+        void onContractResult(O result);
     }
 }
 

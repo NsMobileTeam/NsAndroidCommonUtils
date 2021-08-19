@@ -239,8 +239,14 @@ Class: **NsPrefs**:
 public static NsPrefs get()
 //Get or create a new sharedPreference bundle by Name
 public static NsPrefs get(String name)
-//Get or create a new sharedPreference bundle by Name
-public NsPrefs(String name)
+//Get or create the default EncryptedSharedPreferences bundle by Name
+public static NsPrefs getSecure()
+//Get or create a new EncryptedSharedPreferences bundle by Name
+public static NsPrefs getSecure(String name)
+//Get or create the default EncryptedSharedPreferences bundle by Name locked by device locking mechanism
+public static void getLocked(IUserAuthListener listener)
+//Get or create a new EncryptedSharedPreferences bundle by Name locked by device locking mechanism
+public static void getLocked(String name, IUserAuthListener listener)
 
 ////Methods:
 //Save a boolean value for a String key in the sharedPreferences
@@ -347,6 +353,14 @@ public static int generate(byte[] secret)
 public static int generate(byte[] secret, long timeMillis)
 //Generate a very customized TOTP
 public static int generate(byte[] secret, long timeMillis, @Nullable Long validityTimeMillis, @Nullable Integer codeDigits, @Nullable String hashAlgorithm)
+```
+
+Class: **EncryptionUtil.Store**:
+```java
+//Get the default android keystore "AndroidKeyStore"
+public static KeyStore getMainKeystore()
+//Get or Generate a key pair within the main keystore
+public static KeyPair getKeyPair(String alias, String keyType, int sizeBits, boolean userAuthenticated)
 ```
 
 Abstract class (handles ViewBindings): **NsActivity&lt;T extends ViewBinding&gt;**:
@@ -537,22 +551,6 @@ public static void l(Exception e)
 public static void l(String tag, String content)
 //Setup a handler for online logging
 public static void setOnlineLogger(ILogOnline onlineLogger)
-```
-
-Sacure storage class (requires Android 6, API 23): **NsVault**:
-```java
-//Get the system's keyguard service
-public static KeyguardManager keyguard()
-//Encrypt and save serializable data with the system's Secure Element requiring user authentication
-public static <T> void authSave(String key, T plainData, IVaultListener<Boolean> listener)
-//Decrypt saved encrypted data after user authentication
-public static <T> void authLoad(String key, Class<T> classOfObject, IVaultListener<T> listener)
-//Encrypt and save serializable data with the system's Secure Element
-public static <T> void save(String key, T plainData)
-//Decrypt saved encrypted data
-public static <T> T load(String key, Class<T> classOfObject)
-//Delete saved data entry
-public static void delete(String key)
 ```
 
 ## License
