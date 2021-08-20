@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.ColorInt;
 
 import com.google.gson.Gson;
@@ -87,6 +88,7 @@ public class CommonUtils {
      * @param apiLevel value of an android api build version
      * @return true if current api level is at least the value of apiLevel, otherwise false
      */
+    @ChecksSdkIntAtLeast(parameter = 0)
     public static boolean minApiLevel(int apiLevel) {
         return android.os.Build.VERSION.SDK_INT >= apiLevel;
     }

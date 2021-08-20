@@ -79,7 +79,7 @@ public class NsQuickDialog implements View.OnClickListener {
                 if(child instanceof EditText) {
                     ((EditText) child).setText(getPresetValue(tag));
                     payloadInputs.add((EditText) child);
-                } else if(tag.toLowerCase().equals("close")) {
+                } else if(tag.equalsIgnoreCase("close")) {
                     child.setOnClickListener(v -> onClose());
                 } else {
                     child.setOnClickListener(this);

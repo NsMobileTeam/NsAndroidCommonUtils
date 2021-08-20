@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 @SuppressWarnings("unused")
 public abstract class NsNotification implements Serializable {
-    public static final String BUNDLE_NOTIFICATION_KEY = "PushNotification";
+    public static final String BUNDLE_NOTIFICATION_CODE = "PushNotification";
 
     private final int id;
     private RemoteMessage.Notification remoteNotification;
@@ -80,7 +80,7 @@ public abstract class NsNotification implements Serializable {
      */
     public PendingIntent getPendingIntent(Context context, Class<? extends Activity> activityClass) {
         Intent intent = new Intent(context, activityClass);
-        intent.putExtra(BUNDLE_NOTIFICATION_KEY,this);
+        intent.putExtra(BUNDLE_NOTIFICATION_CODE,this);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -110,7 +110,7 @@ public abstract class NsNotification implements Serializable {
     @SuppressWarnings("unchecked")
     public static <T extends NsNotification> T fromBundle(Intent intent) {
         try {
-            return (T) intent.getExtras().get(BUNDLE_NOTIFICATION_KEY);
+            return (T) intent.getExtras().get(BUNDLE_NOTIFICATION_CODE);
         } catch (Exception e) {
             return null;
         }

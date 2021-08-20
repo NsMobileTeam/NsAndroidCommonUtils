@@ -43,7 +43,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.1.2'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.1.3'
 
     //OPTIONAL for firebase messaging:
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
@@ -539,7 +539,7 @@ public static <T extends NsNotification> T fromBundle(Intent intent)
 public static NsNotification getDefault(RemoteMessage.Notification remoteNotification)
 ```
 
-Logger class: **NsLog**:
+Logger class: **Note**:
 ```java
 //Log an exception online and within the logcat
 public static void o(Exception e)

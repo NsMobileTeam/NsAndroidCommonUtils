@@ -1,6 +1,7 @@
 package com.nextsense.utilbundle.Activities;
 
 import com.nextsense.nsutils.baseElements.NsDate;
+import com.nextsense.nsutils.commons.Note;
 import com.nextsense.nsutils.commons.ResourceFetch;
 import com.nextsense.nsutils.locale.LocaleUtil;
 import com.nextsense.nsutils.uiBaseElements.NsActivity;
@@ -17,6 +18,7 @@ public class MainActivity extends NsActivity<ActivityMainBinding> {
         binding.textView.setOnClickListener(view -> startActivity(SecondActivity.class, new TestModel("Kupa", 123), null));
         NsDate date = new NsDate();
         binding.time.setText(date.toString("YYYY.MM.dd' 'HH:mm:ss.SSS' '(XXX)"));
+        Note.o("TOSTER", "Napredok");
     }
 
     @Override

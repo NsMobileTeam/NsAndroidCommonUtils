@@ -20,7 +20,7 @@ import org.json.JSONObject;
 @SuppressWarnings("unused")
 public abstract class NsFirebaseHandler<T extends NsNotification> extends FirebaseMessagingService {
     private static final String FIREBASE_PREFS = CommonUtils.getAppName() + "FirebasePrefs";
-    private static final String FIREBASE_TOKEN_KEY = "FirebaseToken";
+    private static final String FIREBASE_TOKEN_CODE = "FirebaseToken";
 
     private NotificationManager notificationManager;
     private String channelId;
@@ -53,13 +53,13 @@ public abstract class NsFirebaseHandler<T extends NsNotification> extends Fireba
      * @return token
      */
     public static String getToken() {
-        return NsPrefs.get(FIREBASE_PREFS).getString(FIREBASE_TOKEN_KEY);
+        return NsPrefs.get(FIREBASE_PREFS).getString(FIREBASE_TOKEN_CODE);
     }
 
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
-        NsPrefs.get(FIREBASE_PREFS).saveString(FIREBASE_TOKEN_KEY, s);
+        NsPrefs.get(FIREBASE_PREFS).saveString(FIREBASE_TOKEN_CODE, s);
         onNewToken();
     }
 

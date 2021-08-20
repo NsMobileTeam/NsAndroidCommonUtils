@@ -27,7 +27,7 @@ public class NsPrefs {
     private static final String PREFIX_PREFERENCES = "%sPrefs";
     private static final String PREFIX_LOCKED_PREFERENCES = "%sLockPrefs";
     private static final String PREFIX_SECURE_PREFERENCES = "%sSecPrefs";
-    private static final String PREFIX_MASTER_KEY = "%sMasterKey";
+    private static final String PREFIX_MASTER = "%sMaster";
 
     private final SharedPreferences preferences;
 
@@ -71,7 +71,7 @@ public class NsPrefs {
      */
     public static void getLocked(String name, IUserAuthListener listener) {
         try {
-            String masterKeyAlias = String.format(PREFIX_MASTER_KEY, name);
+            String masterKeyAlias = String.format(PREFIX_MASTER, name);
             MasterKey.Builder builder = new MasterKey.Builder(UtilBase.getContext(), masterKeyAlias);
             builder.setKeyScheme(MasterKey.KeyScheme.AES256_GCM);
             builder.setUserAuthenticationRequired(true, 5);
@@ -130,7 +130,7 @@ public class NsPrefs {
      */
     public static NsPrefs getSecure(String name) {
         try {
-            String masterKeyAlias = String.format(PREFIX_MASTER_KEY, name);
+            String masterKeyAlias = String.format(PREFIX_MASTER, name);
             MasterKey.Builder builder = new MasterKey.Builder(UtilBase.getContext(), masterKeyAlias);
             builder.setKeyScheme(MasterKey.KeyScheme.AES256_GCM);
             SharedPreferences ePrefs = EncryptedSharedPreferences.create(
