@@ -43,7 +43,7 @@ In build.gradle **(Module)**:
   dependencies {
     ...
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.1.1'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.1.2'
 
     //OPTIONAL for firebase messaging:
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
