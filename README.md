@@ -42,14 +42,18 @@ In build.gradle **(Module)**:
 
   dependencies {
     ...
-    implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.1.4'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.1.5'
+    implementation 'com.google.code.gson:gson:2.8.7'
+    implementation "androidx.biometric:biometric:1.1.0"
+    implementation 'androidx.security:security-crypto:1.1.0-alpha03'
+    implementation 'io.github.inflationx:calligraphy3:3.1.1'
+    implementation 'io.github.inflationx:viewpump:2.0.3'
 
     //OPTIONAL for firebase messaging:
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
-    implementation 'com.google.firebase:firebase-analytics:19.0.0'
-    implementation 'com.google.firebase:firebase-core:19.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics:18.1.0'
+    implementation 'com.google.firebase:firebase-analytics:19.0.1'
+    implementation 'com.google.firebase:firebase-core:19.0.1'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.1'
     ...
   }
 
@@ -75,6 +79,8 @@ public class AppExtension extends Application {
         super.onCreate();
         UtilBase.init(this, R.string.fileProviderName, new Locale("mk"));
         // Resouce Example: <string translatable="false" name="fileProviderName">com.nextsense.utilbundle.fileprovider</string>
+        UtilBase.setupCalligraphy("fonts/OpenSans-Regular.ttf");//path to ttf font in assets
+        //or UtilBase.setupCalligraphy();
     }
 }
 ```

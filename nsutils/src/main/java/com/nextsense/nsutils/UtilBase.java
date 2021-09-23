@@ -9,6 +9,10 @@ import com.nextsense.nsutils.locale.LocaleUtil;
 
 import java.util.Locale;
 
+import io.github.inflationx.calligraphy3.CalligraphyConfig;
+import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
+import io.github.inflationx.viewpump.ViewPump;
+
 @SuppressWarnings("unused")
 public class UtilBase {
     private static UtilBase base;
@@ -71,5 +75,27 @@ public class UtilBase {
      */
     public static String getFileProviderAuthority() {
         return base.fileAuthorityName;
+    }
+
+    /**
+     * Setup default calligraphy setup
+     */
+    public static void setupCalligraphy() {
+        setupCalligraphy(null);
+    }
+
+    /**
+     * Setup default calligraphy setup
+     * @param defaultFontAssetPath default app font, parameter is nullable
+     */
+    public static void setupCalligraphy(@Nullable String defaultFontAssetPath) {
+        CalligraphyConfig.Builder configBuilder = new CalligraphyConfig.Builder();
+        configBuilder.setFontAttrId(R.attr.fontPath);
+        if(defaultFontAssetPath != null) {
+            configBuilder.setDefaultFontPath(defaultFontAssetPath);
+        }
+
+        ViewPump.init(ViewPump.builder()
+                .addInterceptor(new CalligraphyInterceptor(configBuilder.build())).build());
     }
 }

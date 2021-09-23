@@ -1,5 +1,6 @@
 package com.nextsense.nsutils.uiBaseElements;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -24,6 +25,8 @@ import com.nextsense.nsutils.storage.NsPrefs;
 
 import java.util.Map;
 
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
+
 @SuppressWarnings({"unused", "SameParameterValue"})
 public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivity {
     private static final String BUNDLE_EXTRA_OBJECT = "EXTRA_OBJECT";
@@ -36,6 +39,11 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
     protected T binding;
 
     private Intent defaultIntent;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
+    }
 
     @Override
     protected final void onCreate(@Nullable Bundle savedInstanceState) {
