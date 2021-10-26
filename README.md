@@ -493,6 +493,22 @@ Dialog class: **NsQuickDialog**:
 public String get(String tagName, String defaultValue)
 ```
 
+Dialog class: **NsLoadingScreen**:
+```java
+//Sets a default layout to be used in case a special layout is defined
+public static void setDefaultLayout(@LayoutRes int layoutId)
+//Starts a single fullscreen topmost instance of a loader
+public static void show(FragmentTransaction transaction)
+//Starts a single fullscreen topmost instance of a loader
+public static void show(FragmentManager manager)
+//Starts a single fullscreen topmost instance of a loader
+public static void show(FragmentManager manager, @Nullable Integer layoutId)
+//Starts a single fullscreen topmost instance of a loader
+public static void show(FragmentTransaction transaction, @Nullable Integer layoutId)
+//Close and destroy the currently running instance of the loader
+public static void close()
+```
+
 Helper class: **NsChannel**:
 ```java
 //Constructor for creating an API safe NotificationChannel for Firebase messaging
