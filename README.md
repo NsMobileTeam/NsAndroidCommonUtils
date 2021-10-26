@@ -42,7 +42,7 @@ In build.gradle **(Module)**:
 
   dependencies {
     ...
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.1.5'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.1.6'
     implementation 'com.google.code.gson:gson:2.8.7'
     implementation "androidx.biometric:biometric:1.1.0"
     implementation 'androidx.security:security-crypto:1.1.0-alpha03'
