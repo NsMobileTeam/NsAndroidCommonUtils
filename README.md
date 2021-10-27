@@ -42,7 +42,7 @@ In build.gradle **(Module)**:
 
   dependencies {
     ...
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.1.6'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.1.7'
     implementation 'com.google.code.gson:gson:2.8.7'
     implementation "androidx.biometric:biometric:1.1.0"
     implementation 'androidx.security:security-crypto:1.1.0-alpha03'
@@ -462,22 +462,7 @@ public int previousPage()
 public void setCurrentItem(int item)
 ```
 
-Dialog class: **NsQuickDialog**:
-```xml
-<Button
-  android:id="@+id/buttonOk"
-  ...
-  android:tag="actionOk"/>
-
-  <!-- WARNING -->
-  <!-- Must contain a clickable view with the tag set to "close" -->
-  <!--
-  Operating cases:
-  1. view is an instance of EditText it's contents are packed in a Pair<Tag, Text> and reported
-  2. tag is equal to "close" click on this view closes the dialogs
-  3. for every other case views are assigned an onClick listener and reported in case of a click
--->
-```
+Dialog class: **NsAlertDialog**:
 ```java
 //Shows a quick dialog without a callback listener
 public static void show(Activity activity, @LayoutRes int dialogueLayout)
@@ -489,8 +474,14 @@ public static void show(Activity activity, @LayoutRes int dialogueLayout, ArrayL
 
 Dialog class: **NsQuickDialog**:
 ```java
-//Dialog response model
-public String get(String tagName, String defaultValue)
+//Display a customized AlertDialog with custom components and action
+public static void show(Context context, @LayoutRes int layoutRes, Component... components)
+//Display a customized AlertDialog with custom components and action
+public static void show(Context context, boolean requiresAction, @LayoutRes int layoutRes, Component... components)
+//Object used to set the text of any view by it's id
+public static class Text
+//Object used to set a click listener of any view by it's id
+public static class Button
 ```
 
 Dialog class: **NsLoadingScreen**:
