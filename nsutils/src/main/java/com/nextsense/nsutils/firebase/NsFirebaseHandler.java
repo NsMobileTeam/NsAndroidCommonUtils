@@ -127,7 +127,7 @@ public abstract class NsFirebaseHandler<T extends NsNotification> extends Fireba
     }
 
     /**
-     * Cancel any NsNotificaiton
+     * Cancel any NsNotification
      * @param notification of type NsNotification
      */
     private void cancel(T notification) {
@@ -136,7 +136,7 @@ public abstract class NsFirebaseHandler<T extends NsNotification> extends Fireba
     }
 
     /**
-     * Cancel any NsNotificaiton
+     * Cancel any NsNotification
      * @param notification of type NsNotification
      */
     public static <T extends NsNotification> void cancel(Context context, T notification) {

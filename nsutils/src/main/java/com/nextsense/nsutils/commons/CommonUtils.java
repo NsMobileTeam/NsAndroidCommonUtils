@@ -182,9 +182,9 @@ public class CommonUtils {
         ArrayList<T> list = null;
         try {
             Gson gson = new Gson();
-            JsonArray arry = JsonParser.parseString(jsonArray).getAsJsonArray();
+            JsonArray array = JsonParser.parseString(jsonArray).getAsJsonArray();
             list = new ArrayList<>();
-            for (JsonElement jsonElement : arry) {
+            for (JsonElement jsonElement : array) {
                 list.add(gson.fromJson(jsonElement, itemClass));
             }
         } catch (Exception ignore) { }

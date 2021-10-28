@@ -32,7 +32,7 @@ public class UtilBase {
      * Initialise the library singleton
      * @param appContext current application context
      * @param fileAuthorityName string resource of the file authority name
-     * @param defaultLocale prefered default locale (if null the device default is selected)
+     * @param defaultLocale preferred default locale (if null the device default is selected)
      */
     public static void init(Context appContext, @StringRes int fileAuthorityName, @Nullable Locale defaultLocale) {
         init(appContext, appContext.getString(fileAuthorityName), defaultLocale);
@@ -42,7 +42,7 @@ public class UtilBase {
      * Initialise the library singleton
      * @param appContext current application context
      * @param fileAuthorityName string object of the file authority name
-     * @param defaultLocale prefered default locale (if null the device default is selected)
+     * @param defaultLocale preferred default locale (if null the device default is selected)
      */
     public static void init(Context appContext, String fileAuthorityName, @Nullable Locale defaultLocale) {
         base = new UtilBase(appContext, fileAuthorityName);

@@ -76,7 +76,7 @@ public abstract class NsNotification implements Serializable {
      * Create a pending intent for this Notification
      * @param context for the creation of the intent
      * @param activityClass class of the launcher activity
-     * @return a fully constructend pending intent
+     * @return a fully constructed pending intent
      */
     public PendingIntent getPendingIntent(Context context, Class<? extends Activity> activityClass) {
         Intent intent = new Intent(context, activityClass);

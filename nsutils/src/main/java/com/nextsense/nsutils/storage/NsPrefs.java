@@ -228,7 +228,7 @@ public class NsPrefs {
     /**
      * Get a boolean value from its sharedPreference key
      * @param key Value of the entry key
-     * @param defValue Default value if key does't exist
+     * @param defValue Default value if key doesn't exist
      * @return The boolean value of the desired sharedPreference key
      */
     public boolean getBoolean(String key, boolean defValue) {

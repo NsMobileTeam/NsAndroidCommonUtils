@@ -185,7 +185,7 @@ public class NsDate extends Date {
     }
 
     /**
-     * String value of time in milliseconds devided by the divisor
+     * String value of time in milliseconds divided by the divisor
      * @param divisor If greater than 0 will be used to divide the milliseconds in final result
      * @return String value of time in milliseconds divided by divisor
      */

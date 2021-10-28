@@ -95,7 +95,7 @@ public class LocaleUtil {
     }
 
     /**
-     * Gets the prefered locale from preferences if saved, the argument provided or device locale
+     * Gets the preferred locale from preferences if saved, the argument provided or device locale
      * @param defaultLocale optional fail-safe reference of any locale
      * @return object of the preferred locale
      */

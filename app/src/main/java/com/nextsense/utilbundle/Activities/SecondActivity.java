@@ -15,7 +15,7 @@ public class SecondActivity extends NsActivity<ActivitySecondBinding> {
         }
 
         MainFragment fragment = new MainFragment();
-        fragment.setExtra(new TestModel("Bawb", 234));
+        fragment.setExtra(new TestModel("NewTestInfo", 234));
         loadFragment(fragment, binding.mainContainer.getId(), true, null);
     }
 

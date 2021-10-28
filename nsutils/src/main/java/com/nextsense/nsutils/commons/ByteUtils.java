@@ -7,9 +7,29 @@ import java.io.ObjectOutputStream;
 
 @SuppressWarnings("unused")
 public class ByteUtils {
+
+    /**
+     * Get a subsequence of a byteArray
+     * @param array of bytes
+     * @param startIndex start index for the subArray
+     * @param endIndex end index for the subArray
+     * @return subArray of the values of param array from startIndex to endIndex
+     */
+    public static byte[] subArray(byte[] array, int startIndex, int endIndex) {
+        startIndex = Math.max(startIndex, 0);
+        endIndex = Math.min(endIndex, array.length);
+        if (array.length > 0 && startIndex < endIndex && array.length > (endIndex - startIndex)) {
+            byte[] subArray = new byte[endIndex - startIndex];
+            System.arraycopy(array, startIndex, subArray, 0, subArray.length);
+            return subArray;
+        }
+
+        return new byte[0];
+    }
+
     /**
      * Merge an array of byte arrays into a single array
-     * @param arrays array of byte arrays
+     * @param arrays of byte arrays
      * @return merged array
      */
     public static byte[] mergeArrays(byte[]... arrays) {
@@ -29,7 +49,7 @@ public class ByteUtils {
      * @param bytes array of bytes
      * @return string with hex values
      */
-    public static String byteArrayToHexString(byte[] bytes) {
+    public static String toHexString(byte[] bytes) {
         char[] hexMap = "0123456789ABCDEF".toCharArray();
         char[] hexChars = new char[bytes.length * 2];
         for (int j = 0; j < bytes.length; j++) {

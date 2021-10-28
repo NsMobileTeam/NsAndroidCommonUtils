@@ -435,44 +435,7 @@ void onSuccess(T result)
 void onFail(Exception e)
 ```
 
-View: **NsFragmentPager**:
-```xml
-<!-- OPTIONAL -->
-<com.nextsense.nsutils.uiBaseElements.fragmentPager.NsFragmentPager
-        android:id="@+id/lpMain"
-        ...
-        app:menuId="@menu/nav_menu"/>
-```
-```java
-//Initialize the pager layout and attach to navigation view
-public void init(BottomNavigationView navigationView, FragmentManager fragmentManager, Fragment... fragments)
-//Attach the Fragment pager to a bottom navigation view
-public void attachToNavigationView(BottomNavigationView navigationView)
-//Load the fragments in the page layouts in the order that are added
-public void loadFragments(FragmentManager fragmentManager, Fragment... fragments)
-//Set menu by menuId and the viewPages
-public void setMenu(@MenuRes int menuId)
-//Setup ViewPages according to a menu
-public void setPagesForMenu(Menu menu)
-//Go to the next page in the pager
-public int nextPage();
-//Go to the previous page in the pager
-public int previousPage()
-//Set current page and navigation menu selected item
-public void setCurrentItem(int item)
-```
-
 Dialog class: **NsAlertDialog**:
-```java
-//Shows a quick dialog without a callback listener
-public static void show(Activity activity, @LayoutRes int dialogueLayout)
-//Shows a quick dialog with a callback listener
-public static void show(Activity activity, @LayoutRes int dialogueLayout, IUniversalListener<NsDialogResult> listener)
-//Shows a quick dialog with a callback listener and an arrayList of Pair<Tag,Text> presets for tagged EditTexts
-public static void show(Activity activity, @LayoutRes int dialogueLayout, ArrayList<Pair<String, String>> presets, IUniversalListener<NsDialogResult> listener)
-```
-
-Dialog class: **NsQuickDialog**:
 ```java
 //Display a customized AlertDialog with custom components and action
 public static void show(Context context, @LayoutRes int layoutRes, Component... components)

@@ -18,10 +18,10 @@ public class MainActivity extends NsActivity<ActivityMainBinding> {
     protected void onCreate() {
         binding.btnChangeLocale.setText(ResourceFetch.getString(R.string.locale_name));
         binding.btnChangeLocale.setOnClickListener(view -> LocaleUtil.setLocale(MainActivity.this, ResourceFetch.getString(R.string.locale_name).equals("EN") ? "MK" : "EN"));
-        binding.textView.setOnClickListener(view -> startActivity(SecondActivity.class, new TestModel("Kupa", 123), null));
+        binding.textView.setOnClickListener(view -> startActivity(SecondActivity.class, new TestModel("TestInfo", 123), null));
         NsDate date = new NsDate();
         binding.time.setText(date.toString("YYYY.MM.dd' 'HH:mm:ss.SSS' '(XXX)"));
-        Note.o("TOSTER", "Napredok");
+        Note.o("TOAST", "Successful propagation");
         NsLoadingScreen.setDefaultLayout(R.layout.layout_default_loader);
         NsLoadingScreen.show(getSupportFragmentManager());
         new Handler().postDelayed(NsLoadingScreen::close, 6000);

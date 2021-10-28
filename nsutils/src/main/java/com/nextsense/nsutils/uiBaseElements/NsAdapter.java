@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
+@SuppressWarnings("unused")
 public abstract class NsAdapter<T extends ViewBinding> extends RecyclerView.Adapter<UniHolder<T>> {
     @NonNull
     @Override
