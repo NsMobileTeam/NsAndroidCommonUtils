@@ -87,13 +87,12 @@ public abstract class NsFirebaseHandler<T extends NsNotification> extends Fireba
     private NotificationManager getNotificationManager() {
         if (notificationManager == null) {
             notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
+            NsChannel nsChannel = getChannel();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                notificationManager.createNotificationChannel(getChannel().getNotificationChannel());
-                channelId = getChannel().getNotificationChannel().getId();
-            } else {
-                channelId = "DEFAULT";
+                notificationManager.createNotificationChannel(nsChannel.getNotificationChannel());
             }
+
+            channelId = nsChannel.getChannelId();
         }
 
         return notificationManager;

@@ -52,7 +52,7 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
         setupBinding();
     }
 
-    private void setupBinding() {
+    protected void setupBinding() {
         binding = getBinding();
         setContentView(binding.getRoot());
         permissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), this::reportPermissionStatus);
@@ -195,7 +195,7 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
         }
     }
 
-    private void reportPermissionStatus(Map<String, Boolean> result) {
+    protected void reportPermissionStatus(Map<String, Boolean> result) {
         if(this.permissionListener != null) {
             this.permissionListener.onSuccess(result);
             this.permissionListener = null;
