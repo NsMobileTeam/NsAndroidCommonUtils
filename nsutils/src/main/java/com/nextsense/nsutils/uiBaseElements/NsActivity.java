@@ -46,13 +46,16 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        LocaleUtil.applyCurrentLocale(this);
+    protected final void onCreate(@Nullable Bundle savedInstanceState) {
+        if(overrideLocale()) {
+            LocaleUtil.applyCurrentLocale(this);
+        }
+
         super.onCreate(savedInstanceState);
         setupBinding();
     }
 
-    protected void setupBinding() {
+    private void setupBinding() {
         binding = getBinding();
         setContentView(binding.getRoot());
         permissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), this::reportPermissionStatus);
@@ -75,6 +78,14 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
             this.permissionListener = permissionListener;
             this.permissionLauncher.launch(permissions);
         }
+    }
+
+    /**
+     * Override this function if custom code is necessary to setup the activity locale
+     * @return returning true will preform the default action
+     */
+    protected boolean overrideLocale() {
+        return true;
     }
 
     /**
@@ -195,7 +206,7 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
         }
     }
 
-    protected void reportPermissionStatus(Map<String, Boolean> result) {
+    private void reportPermissionStatus(Map<String, Boolean> result) {
         if(this.permissionListener != null) {
             this.permissionListener.onSuccess(result);
             this.permissionListener = null;
