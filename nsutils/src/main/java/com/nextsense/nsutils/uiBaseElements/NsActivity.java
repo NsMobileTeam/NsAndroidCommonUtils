@@ -46,7 +46,7 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
     }
 
     @Override
-    protected final void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         LocaleUtil.applyCurrentLocale(this);
         super.onCreate(savedInstanceState);
         setupBinding();
