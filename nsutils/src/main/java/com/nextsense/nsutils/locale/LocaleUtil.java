@@ -74,7 +74,13 @@ public class LocaleUtil {
      * @param locale reference
      */
     public static void setLocale(Context context, Locale locale) {
-        Resources res = context.getResources();
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+        context.getApplicationContext().createConfigurationContext(config);
+        context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+        LOCALE_PREFERENCE.saveObject(LOCALE_PREF_NAME, locale);
+        /*Resources res = context.getResources();
         Configuration configuration = new Configuration();
         DisplayMetrics dm = res.getDisplayMetrics();
 
@@ -91,7 +97,7 @@ public class LocaleUtil {
         res.updateConfiguration(configuration, dm);
         configuration.setLayoutDirection(locale);
         LOCALE_PREFERENCE.saveObject(LOCALE_PREF_NAME, locale);
-        context.createConfigurationContext(configuration);
+        context.createConfigurationContext(configuration);*/
     }
 
     /**
