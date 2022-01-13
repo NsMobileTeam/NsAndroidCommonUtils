@@ -19,7 +19,7 @@ import java.util.Locale;
 
 public class LocaleUtil {
     private static final String LOCALE_PREF_NAME = "PreferredLocaleSetting";
-    private static final NsPrefs LOCALE_PREFERENCE = NsPrefs.get("AppLocalePreference");
+    //private static final NsPrefs LOCALE_PREFERENCE = NsPrefs.get("AppLocalePreference");
 
     /**
      * Initialises and sets application locale
@@ -79,7 +79,7 @@ public class LocaleUtil {
         config.setLocale(locale);
         context.getApplicationContext().createConfigurationContext(config);
         context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-        LOCALE_PREFERENCE.saveObject(LOCALE_PREF_NAME, locale);
+        //LOCALE_PREFERENCE.saveObject(LOCALE_PREF_NAME, locale);
         /*Resources res = context.getResources();
         Configuration configuration = new Configuration();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -106,7 +106,7 @@ public class LocaleUtil {
      * @return object of the preferred locale
      */
     public static Locale getPreferredLocale(@Nullable Locale defaultLocale) {
-        Locale currentLocale = LOCALE_PREFERENCE.getObject(LOCALE_PREF_NAME, Locale.class);
+        Locale currentLocale = null;//LOCALE_PREFERENCE.getObject(LOCALE_PREF_NAME, Locale.class);
         if(currentLocale == null) {
             return defaultLocale != null ? defaultLocale : Locale.getDefault();
         }
