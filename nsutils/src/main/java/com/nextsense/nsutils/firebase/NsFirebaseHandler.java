@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 @SuppressWarnings("unused")
 public abstract class NsFirebaseHandler<T extends NsNotification> extends FirebaseMessagingService {
-    private static final String FIREBASE_PREFS = CommonUtils.getAppName() + "FirebasePrefs";
+    private static final String FIREBASE_PREFS = NsPrefs.DEFAULT_NAME + "FirebasePrefs";
     private static final String FIREBASE_TOKEN_CODE = "FirebaseToken";
 
     private NotificationManager notificationManager;

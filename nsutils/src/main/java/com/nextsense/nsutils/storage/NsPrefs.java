@@ -24,6 +24,8 @@ import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 public class NsPrefs {
+    public static final String DEFAULT_NAME = "NsDefault";
+
     private static final String PREFIX_PREFERENCES = "%sPrefs";
     private static final String PREFIX_LOCKED_PREFERENCES = "%sLockPrefs";
     private static final String PREFIX_SECURE_PREFERENCES = "%sSecPrefs";
@@ -44,7 +46,7 @@ public class NsPrefs {
      * @return a default preference
      */
     public static NsPrefs get() {
-        return get(String.format(PREFIX_PREFERENCES, CommonUtils.getAppName()));
+        return get(String.format(PREFIX_PREFERENCES, DEFAULT_NAME));
     }
 
     /**
@@ -61,7 +63,7 @@ public class NsPrefs {
      * @param listener user authentication listener
      */
     public static void getLocked(IUserAuthListener listener) {
-        getLocked(String.format(PREFIX_LOCKED_PREFERENCES, CommonUtils.getAppName()), listener);
+        getLocked(String.format(PREFIX_LOCKED_PREFERENCES, DEFAULT_NAME), listener);
     }
 
     /**
@@ -120,7 +122,7 @@ public class NsPrefs {
      * @return encrypted shared preference
      */
     public static NsPrefs getSecure() {
-        return getSecure(String.format(PREFIX_SECURE_PREFERENCES, CommonUtils.getAppName()));
+        return getSecure(String.format(PREFIX_SECURE_PREFERENCES, DEFAULT_NAME));
     }
 
     /**
