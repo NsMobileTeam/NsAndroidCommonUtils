@@ -3,16 +3,10 @@ package com.nextsense.nsutils.locale;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.os.Build;
-import android.os.LocaleList;
-import android.util.DisplayMetrics;
 
 import androidx.annotation.Nullable;
 
 import com.nextsense.nsutils.UtilBase;
-import com.nextsense.nsutils.commons.CommonUtils;
-import com.nextsense.nsutils.commons.ResourceFetch;
 import com.nextsense.nsutils.storage.NsPrefs;
 
 import java.util.Locale;
@@ -26,7 +20,7 @@ public class LocaleUtil {
      * @param defaultLocale preferred locale
      */
     public static void initAppLocale(@Nullable Locale defaultLocale) {
-        setLocale(UtilBase.getContext(), getPreferredLocale(defaultLocale));
+        setLocale(UtilBase.getContext(), getCurrentLocale(defaultLocale));
     }
 
     /**
@@ -34,7 +28,7 @@ public class LocaleUtil {
      * @param context reference
      */
     public static void applyCurrentLocale(Context context) {
-        setLocale(context, getCurrentAppLocale());
+        setLocale(context, getCurrentLocale());
     }
 
     /**
@@ -74,24 +68,20 @@ public class LocaleUtil {
      * @param locale reference
      */
     public static void setLocale(Context context, Locale locale) {
-        Resources res = context.getResources();
-        Configuration configuration = new Configuration();
-        DisplayMetrics dm = res.getDisplayMetrics();
-
-        if (CommonUtils.minApiLevel(Build.VERSION_CODES.N)) {
-            configuration.setLocale(locale);
-            LocaleList localeList = new LocaleList(locale);
-            configuration.setLocales(localeList);
-            LocaleList.setDefault(localeList);
-        } else {
-            configuration.setLocale(locale);
-        }
-
         Locale.setDefault(locale);
-        res.updateConfiguration(configuration, dm);
-        configuration.setLayoutDirection(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+        context.getApplicationContext().createConfigurationContext(config);
+        context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
         LOCALE_PREFERENCE.saveObject(LOCALE_PREF_NAME, locale);
-        context.createConfigurationContext(configuration);
+    }
+
+    /**
+     * Gets the preferred locale from preferences if saved, the argument provided or device locale
+     * @return object of the preferred locale
+     */
+    public static Locale getCurrentLocale() {
+        return getCurrentLocale(null);
     }
 
     /**
@@ -99,25 +89,12 @@ public class LocaleUtil {
      * @param defaultLocale optional fail-safe reference of any locale
      * @return object of the preferred locale
      */
-    public static Locale getPreferredLocale(@Nullable Locale defaultLocale) {
+    public static Locale getCurrentLocale(@Nullable Locale defaultLocale) {
         Locale currentLocale = LOCALE_PREFERENCE.getObject(LOCALE_PREF_NAME, Locale.class);
         if(currentLocale == null) {
             return defaultLocale != null ? defaultLocale : Locale.getDefault();
         }
 
         return currentLocale;
-    }
-
-    /**
-     * Gets the currently set locale from app configuration
-     * @return object of the currently set locale
-     */
-    @SuppressWarnings("deprecation") //Handled by api check
-    public static Locale getCurrentAppLocale() {
-        if (CommonUtils.minApiLevel(Build.VERSION_CODES.N)) {
-            return ResourceFetch.getConfiguration().getLocales().get(0);
-        }
-
-        return ResourceFetch.getConfiguration().locale;
     }
 }
