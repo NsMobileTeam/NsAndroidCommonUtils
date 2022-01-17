@@ -3,8 +3,12 @@ package com.nextsense.nsutils.locale;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
+import android.os.LocaleList;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.nextsense.nsutils.UtilBase;
 import com.nextsense.nsutils.storage.NsPrefs;
@@ -69,9 +73,10 @@ public class LocaleUtil {
      */
     public static void setLocale(Context context, Locale locale) {
         Locale.setDefault(locale);
-        Configuration config = new Configuration();
+        Configuration config = context.getResources().getConfiguration();
         config.setLocale(locale);
-        context.getApplicationContext().createConfigurationContext(config);
+        Context newAppContext = context.getApplicationContext().createConfigurationContext(config);
+        UtilBase.updateAppContext(newAppContext);
         context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
         LOCALE_PREFERENCE.saveObject(LOCALE_PREF_NAME, locale);
     }

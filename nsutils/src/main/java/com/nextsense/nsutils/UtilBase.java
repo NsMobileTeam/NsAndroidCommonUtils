@@ -2,12 +2,9 @@ package com.nextsense.nsutils;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-
-import com.nextsense.nsutils.locale.LocaleUtil;
-
-import java.util.Locale;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
@@ -16,7 +13,8 @@ import io.github.inflationx.viewpump.ViewPump;
 @SuppressWarnings("unused")
 public class UtilBase {
     private static UtilBase base;
-    private final Context appContext;
+    private static ContextConfigChangeListener contextListener;
+    private Context appContext;
     private final String fileAuthorityName;
 
     /**
@@ -24,31 +22,17 @@ public class UtilBase {
      * @param appContext current application context
      * @param fileAuthorityName string resource of the file authority name
      */
-    public static void init(Context appContext, @StringRes int fileAuthorityName) {
-        init(appContext, appContext.getString(fileAuthorityName), null);
-    }
-
-    /**
-     * Initialise the library singleton
-     * @param appContext current application context
-     * @param fileAuthorityName string resource of the file authority name
-     * @param defaultLocale preferred default locale (if null the device default is selected)
-     */
-    public static void init(Context appContext, @StringRes int fileAuthorityName, @Nullable Locale defaultLocale) {
-        init(appContext, appContext.getString(fileAuthorityName), defaultLocale);
+    public static void init(Context appContext, @StringRes int fileAuthorityName, @NonNull ContextConfigChangeListener configChangeListener) {
+        init(appContext, appContext.getString(fileAuthorityName), configChangeListener);
     }
 
     /**
      * Initialise the library singleton
      * @param appContext current application context
      * @param fileAuthorityName string object of the file authority name
-     * @param defaultLocale preferred default locale (if null the device default is selected)
      */
-    public static void init(Context appContext, String fileAuthorityName, @Nullable Locale defaultLocale) {
-        base = new UtilBase(appContext, fileAuthorityName);
-        if(defaultLocale != null) {
-            LocaleUtil.initAppLocale(defaultLocale);
-        }
+    public static void init(Context appContext, String fileAuthorityName, @NonNull ContextConfigChangeListener configChangeListener) {
+        base = new UtilBase(appContext, fileAuthorityName, configChangeListener);
     }
 
     /**
@@ -56,9 +40,21 @@ public class UtilBase {
      * @param appContext Current app context
      * @param fileAuthorityName string object of the file authority name
      */
-    private UtilBase(Context appContext, String fileAuthorityName) {
+    private UtilBase(Context appContext, String fileAuthorityName, @NonNull ContextConfigChangeListener externalListener) {
         this.appContext = appContext;
         this.fileAuthorityName = fileAuthorityName;
+        UtilBase.contextListener = applicationContext -> {
+            UtilBase.this.appContext = applicationContext;
+            externalListener.onNewContext(applicationContext);
+        };
+    }
+
+    /**
+     * Update the appContext on configuration changed
+     * @param appContext new Application Context
+     */
+    public static void updateAppContext(Context appContext) {
+        contextListener.onNewContext(appContext);
     }
 
     /**
@@ -97,5 +93,9 @@ public class UtilBase {
 
         ViewPump.init(ViewPump.builder()
                 .addInterceptor(new CalligraphyInterceptor(configBuilder.build())).build());
+    }
+
+    public interface ContextConfigChangeListener {
+        void onNewContext(Context context);
     }
 }
