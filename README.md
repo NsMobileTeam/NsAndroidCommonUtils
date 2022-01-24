@@ -42,18 +42,18 @@ In build.gradle **(Module)**:
 
   dependencies {
     ...
-    implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.1.10'
-    implementation 'com.google.code.gson:gson:2.8.7'
+    implementation 'com.github.nsmobileteam:nsandroidcommonutils:1.1.11'
+    implementation 'com.google.code.gson:gson:2.8.9'
     implementation "androidx.biometric:biometric:1.1.0"
     implementation 'androidx.security:security-crypto:1.1.0-alpha03'
     implementation 'io.github.inflationx:calligraphy3:3.1.1'
     implementation 'io.github.inflationx:viewpump:2.0.3'
 
     //OPTIONAL for firebase messaging:
-    implementation 'com.google.firebase:firebase-messaging:22.0.0'
-    implementation 'com.google.firebase:firebase-analytics:19.0.1'
-    implementation 'com.google.firebase:firebase-core:19.0.1'
-    implementation 'com.google.firebase:firebase-crashlytics:18.2.1'
+    implementation 'com.google.firebase:firebase-messaging:23.0.0'
+    implementation 'com.google.firebase:firebase-analytics:20.0.2'
+    implementation 'com.google.firebase:firebase-core:20.0.2'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.6'
     ...
   }
 
@@ -77,10 +77,18 @@ public class AppExtension extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        UtilBase.init(this, R.string.fileProviderName, new Locale("mk"));
+        UtilBase.init(this, R.string.fileProviderName, new UtilBase.ContextConfigChangeListener() {
+            @Override
+            public void onNewContext(Context appContext) {
+                //TODO Implement appContext update here
+            }
+        });
         // Resouce Example: <string translatable="false" name="fileProviderName">com.nextsense.utilbundle.fileprovider</string>
+
         UtilBase.setupCalligraphy("fonts/OpenSans-Regular.ttf");//path to ttf font in assets
         //or UtilBase.setupCalligraphy();
+
+        LocaleUtil.initAppLocale(new Locale("mk"));
     }
 }
 ```
@@ -318,9 +326,9 @@ public static void setLocale(Context context, String languageCode, @Nullable Str
 //Apply locale to a context
 public static void setLocale(Context context, Locale locale)
 //Gets the prefered locale from preferences if saved, the argument provided or device locale
-public static Locale getPreferredLocale(@Nullable Locale defaultLocale)
+public static Locale getCurrentLocale(@Nullable Locale defaultLocale)
 //Gets the currently set locale from app configuration
-public static Locale getCurrentAppLocale()
+public static Locale getCurrentLocales()
 ```
 
 Class: **EncryptionUtil**:
