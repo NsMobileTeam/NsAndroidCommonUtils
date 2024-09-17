@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.ViewGroup;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -36,6 +37,7 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
     private IUniversalListener<Map<String, Boolean>> permissionListener;
     private ActivityResultLauncher<Object> resultLauncher;
     private NsActivityContract<Object, Object> resultContract;
+    private ViewGroup content;
     protected T binding;
 
     private Intent defaultIntent;
@@ -58,6 +60,7 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
     private void setupBinding() {
         binding = getBinding();
         setContentView(binding.getRoot());
+        content = getWindow().getDecorView().findViewById(android.R.id.content);
         permissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), this::reportPermissionStatus);
         resultContract = new NsActivityContract<>();
         resultLauncher = registerForActivityResult(resultContract, resultContract);
@@ -211,5 +214,17 @@ public abstract class NsActivity<T extends ViewBinding> extends AppCompatActivit
             this.permissionListener.onSuccess(result);
             this.permissionListener = null;
         }
+    }
+
+    public ViewGroup getContent() {
+        return content;
+    }
+
+    public void showLoader() {
+        NsLoadingView.show(getContent());
+    }
+
+    public void endLoader() {
+        NsLoadingView.dismiss(getContent());
     }
 }

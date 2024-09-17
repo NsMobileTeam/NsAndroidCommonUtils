@@ -15,7 +15,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
+/**
+ * Buggy implementation is replaced with
+ *
+ * @deprecated use {@link #NsLoadingScreen()} instead.
+ */
+@Deprecated
 @SuppressWarnings("unused")
 public class NsLoadingScreen extends DialogFragment {
     protected static final String TAG = "NsLoadingScreen";

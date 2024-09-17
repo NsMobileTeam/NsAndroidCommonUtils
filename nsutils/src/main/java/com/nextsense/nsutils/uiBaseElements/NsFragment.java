@@ -23,6 +23,7 @@ public abstract class NsFragment<T extends ViewBinding> extends Fragment {
     protected T binding;
     private NsActivity<?> activity;
     private Activity parentActivity;
+    private ViewGroup content;
 
     @Nullable
     @Override
@@ -32,6 +33,10 @@ public abstract class NsFragment<T extends ViewBinding> extends Fragment {
         if(parentActivity instanceof NsActivity) {
             activity = (NsActivity<?>) parentActivity;
         }
+
+        try {
+            content = parentActivity.getWindow().getDecorView().findViewById(android.R.id.content);
+        } catch (Exception ignore) { }
 
         onCreateView();
         return this.binding.getRoot();
@@ -122,5 +127,17 @@ public abstract class NsFragment<T extends ViewBinding> extends Fragment {
      */
     public void popBackstack() {
         getParentFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+    public ViewGroup getContent() {
+        return content;
+    }
+
+    public void showLoader() {
+        NsLoadingView.show(getContent());
+    }
+
+    public void endLoader() {
+        NsLoadingView.dismiss(getContent());
     }
 }

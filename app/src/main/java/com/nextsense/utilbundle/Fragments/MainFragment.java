@@ -1,5 +1,6 @@
 package com.nextsense.utilbundle.Fragments;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 
 import com.nextsense.nsutils.uiBaseElements.NsFragment;
@@ -12,6 +13,8 @@ public class MainFragment extends NsFragment<FragmentMainBinding> {
     public void onCreateView() {
         TestModel t = getExtra();
         binding.tvMessage.setText(t.toString());
+        showLoader();
+        new Handler().postDelayed(this::endLoader,2000);
     }
 
     @Override

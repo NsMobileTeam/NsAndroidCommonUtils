@@ -86,7 +86,7 @@ public class UtilBase {
      */
     public static void setupCalligraphy(@Nullable String defaultFontAssetPath) {
         CalligraphyConfig.Builder configBuilder = new CalligraphyConfig.Builder();
-        configBuilder.setFontAttrId(R.attr.fontPath);
+        //configBuilder.setFontAttrId(R.attr.fontPath);
         if(defaultFontAssetPath != null) {
             configBuilder.setDefaultFontPath(defaultFontAssetPath);
         }

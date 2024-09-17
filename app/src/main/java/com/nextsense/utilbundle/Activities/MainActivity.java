@@ -22,9 +22,8 @@ public class MainActivity extends NsActivity<ActivityMainBinding> {
         NsDate date = new NsDate();
         binding.time.setText(date.toString("YYYY.MM.dd' 'HH:mm:ss.SSS' '(XXX)"));
         Note.o("TOAST", "Successful propagation");
-        NsLoadingScreen.setDefaultLayout(R.layout.layout_default_loader);
-        NsLoadingScreen.show(getSupportFragmentManager());
-        new Handler().postDelayed(NsLoadingScreen::close, 6000);
+        showLoader();
+        new Handler().postDelayed(this::endLoader,3000);
     }
 
     @Override
