@@ -1,11 +1,13 @@
 package com.nextsense.nsutils.storage;
 
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 
 import androidx.annotation.Nullable;
@@ -86,25 +88,42 @@ public class DownloadUtil {
      * @param request Defined download request
      * @param callback Download completion listener
      */
-    protected static void enqueueDownload(DownloadManager.Request request, DownloadUtil.DownloadCallback callback) {
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")//Handled for the essential api levels
+    protected static void enqueueDownload(DownloadManager.Request request, DownloadCallback callback) {
         DownloadManager downloadManager = ResourceFetch.getSystemService(DownloadManager.class);
-        final long downloadId = downloadManager.enqueue(request);
         if (callback != null) {
-            UtilBase.getContext().registerReceiver(new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    context.unregisterReceiver(this);
-                    long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-                    if (downloadId == id) {
-                        DownloadManager manager = ResourceFetch.getSystemService(DownloadManager.class);
-                        Uri uri = manager.getUriForDownloadedFile(downloadId);
-                        callback.onDownloadCallback(FileUtil.fileFromUri(uri), null);
-                    } else {
-                        callback.onDownloadCallback(null, new Exception("Download Error"));
-                    }
-                }
-            }, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+            long downloadId = downloadManager.enqueue(request);
+            BroadcastReceiver receiver = createDownloadReceiver(downloadId, callback);
+            IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                UtilBase.getContext().registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
+            } else {
+                UtilBase.getContext().registerReceiver(receiver, filter);
+            }
         }
+    }
+
+    /**
+     * Creates the LocalDownloadManager Broadcast receiver
+     * @param downloadId id of the download queue session
+     * @param callback Download completion listener
+     * @return LocalDownloadManager Broadcast receiver
+     */
+    private static BroadcastReceiver createDownloadReceiver(long downloadId, DownloadUtil.DownloadCallback callback) {
+        return new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                context.unregisterReceiver(this);
+                long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                if (downloadId == id) {
+                    DownloadManager manager = ResourceFetch.getSystemService(DownloadManager.class);
+                    Uri uri = manager.getUriForDownloadedFile(downloadId);
+                    callback.onDownloadCallback(FileUtil.fileFromUri(uri), null);
+                } else {
+                    callback.onDownloadCallback(null, new Exception("Download Error"));
+                }
+            }
+        };
     }
 
     public interface DownloadCallback {
